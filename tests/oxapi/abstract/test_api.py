@@ -115,7 +115,7 @@ class TestModelAPI:
                 )
 
     def test_general_error_to_str(self):
-        """Testing general OxAPIError exception raising."""
+        """Testing general OxAPIError exception to string."""
         oxapi.api_key = "test"
         with mock.patch(
             "oxapi.abstract.api.grequests.map",
