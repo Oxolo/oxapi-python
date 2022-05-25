@@ -34,6 +34,21 @@ class TestClassification:
         """
         return MockedResponse(status_code=200, message={"results": ["mocked_label"]})
 
+    @pytest.fixture
+    def mocked_answer_dialog_emotions(self):
+        """Creates mocked response for testing purposes, specifically for
+        dialog-emotions model.
+
+        Returns:
+            list : mocked answers
+        """
+        return MockedResponse(
+            status_code=200,
+            message={
+                "results": [["mocked_label", "mocked_label2", "mocked_label3", 1.0]]
+            },
+        )
+
     def test_create(self, mocked_answer):
         """Testing create function.
 
@@ -155,3 +170,21 @@ class TestClassification:
             api = Classification.create(model="dialog-topic", texts=["esposito"])
 
         assert isinstance(api.format_result("dict"), dict)
+
+    def test_dialog_emotions_model(self, mocked_answer_dialog_emotions):
+        """
+        Testing dialog-topic specific result.
+        Args:
+            mocked_answer_dialog_emotions:
+
+        Returns:
+
+        """
+        oxapi.api_key = "test"
+        with mock.patch(
+            "oxapi.abstract.api.grequests.map",
+            return_value=[mocked_answer_dialog_emotions],
+        ):
+            api = Classification.create(model="dialog-emotions", texts=["esposito"])
+
+        assert isinstance(api.format_result(), pd.DataFrame)
