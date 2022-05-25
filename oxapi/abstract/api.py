@@ -222,16 +222,3 @@ class ModelAPI:
                 key = "_body"
             self.__setattr__(key, value)
 
-
-class ListResourcesAPI:
-    def __init__(self):
-        if self.__class__ == ListResourcesAPI:
-            raise NotImplementedError(
-                "ListResourcesAPI class cannot be directly instantiated"
-            )
-
-    def list_models(self, oxapi_type: OxapiType = None, sub_type: str = None):
-        pass
-
-    def retrieve_lastest_model_version(self, oxapi_type: OxapiType, model: str):
-        pass

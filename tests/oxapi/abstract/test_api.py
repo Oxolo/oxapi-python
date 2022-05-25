@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 
 import oxapi
-from oxapi.abstract.api import ListResourcesAPI, ModelAPI
+from oxapi.abstract.api import ModelAPI
 from oxapi.error import (
     InvalidAPIKeyException,
     NotAllowedException,
@@ -144,11 +144,3 @@ class TestModelAPI:
             api = Classification.create(model="dialog-content-filter", texts=["dizio"])
             assert isinstance(str(api), str)
 
-
-class TestListResourcesAPI:
-    """Test class for ListResourcesAPI class."""
-
-    def test_instantiation(self):
-        """Test error at abstract class instantiation."""
-        with pytest.raises(NotImplementedError):
-            api = ListResourcesAPI()
