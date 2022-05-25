@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 
 import oxapi
-from oxapi.abstract.api import ListResourcesAPI, ModelAPI
+from oxapi.abstract.api import ModelAPI
 from oxapi.error import (
     InvalidAPIKeyException,
     NotAllowedException,
@@ -18,6 +18,17 @@ from tests.testing_utils import MockedResponse
 class TestModelAPI:
     """Tests for ModelAPI class."""
 
+    @pytest.fixture
+    def mocked_answer_classification(self):
+        """Creates mocked response for testing purposes.
+
+        Returns:
+            list : mocked answers
+        """
+        return MockedResponse(
+            status_code=200, message={"results": [["mocked_label", 1.0]]}
+        )
+
     @staticmethod
     def build_mocked_error(status_code):
         """
@@ -26,6 +37,7 @@ class TestModelAPI:
             status_code:
 
         Returns:
+            MockedResponse : the mocked error response from grequests.
 
         """
         return MockedResponse(
@@ -33,20 +45,14 @@ class TestModelAPI:
         )
 
     def test_instantiation(self):
-        """Test error at abstract class instantiation.
-
-        Returns:
-        """
+        """Test error at abstract class instantiation."""
         with pytest.raises(NotImplementedError):
             api = ModelAPI(
                 OxapiNLPClassificationModel("dialog-topic"), OxapiType.NLP, "w", "v"
             )
 
     def test_api_key(self):
-        """Testing error raising with not defined API Key.
-
-        Returns:
-        """
+        """Testing error raising with not defined API Key."""
         oxapi.api_key = None
         with pytest.raises(InvalidAPIKeyException) as ve:
             Classification.create(model="dialog-topic", texts=["esposito"])
@@ -57,10 +63,7 @@ class TestModelAPI:
         assert api.param1 == 1 and api.param2 == 2
 
     def test_general_error(self):
-        """Testing general OxAPIError exception raising.
-
-        Returns:
-        """
+        """Testing general OxAPIError exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
             "oxapi.abstract.api.grequests.map",
@@ -73,10 +76,7 @@ class TestModelAPI:
                 )
 
     def test_not_found_error(self):
-        """Testing NotFoundException exception raising.
-
-        Returns:
-        """
+        """Testing NotFoundException exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
             "oxapi.abstract.api.grequests.map",
@@ -89,10 +89,7 @@ class TestModelAPI:
                 )
 
     def test_not_allowed_error(self):
-        """Testing NotAllowedException exception raising.
-
-        Returns:
-        """
+        """Testing NotAllowedException exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
             "oxapi.abstract.api.grequests.map",
@@ -105,10 +102,7 @@ class TestModelAPI:
                 )
 
     def test_invalid_key_error(self):
-        """Testing InvalidAPIKeyException exception raising.
-
-        Returns:
-        """
+        """Testing InvalidAPIKeyException exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
             "oxapi.abstract.api.grequests.map",
@@ -120,14 +114,32 @@ class TestModelAPI:
                     texts=[],
                 )
 
+    def test_general_error_to_str(self):
+        """Testing general OxAPIError exception to string."""
+        oxapi.api_key = "test"
+        with mock.patch(
+            "oxapi.abstract.api.grequests.map",
+            return_value=[TestModelAPI.build_mocked_error(500)],
+        ):
+            try:
+                api = Classification.create(
+                    model="dialog-tag",
+                    texts=[],
+                )
+            except OxAPIError as oe:
+                assert isinstance(str(oe), str)
 
-class TestListResourcesAPI:
-    """Test class for ListResourcesAPI class."""
+    def test_str(self, mocked_answer_classification):
+        """Testing __str__ function.
 
-    def test_instantiation(self):
-        """Test error at abstract class instantiation.
-
-        Returns:
+        Args:
+            mocked_answer: the mocked answer from grequests.
         """
-        with pytest.raises(NotImplementedError):
-            api = ListResourcesAPI()
+        oxapi.api_key = "test"
+
+        with mock.patch(
+            "oxapi.abstract.api.grequests.map",
+            return_value=[mocked_answer_classification],
+        ):
+            api = Classification.create(model="dialog-content-filter", texts=["dizio"])
+            assert isinstance(str(api), str)

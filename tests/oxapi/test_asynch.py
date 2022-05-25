@@ -29,22 +29,16 @@ class TestAsyncCallPipe:
         return [mocked_answer1, mocked_answer2]
 
     def test_empty_run(self):
-        """Testing run function on empty call list.
-
-        Returns:
-        """
+        """Testing run function on empty call list."""
         asy = AsyncCallPipe()
         res = asy.run()
         assert res is None
 
     def test_run(self, mocked_answer):
-        """
-        Testing run function.
+        """Testing run function.
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-        Returns:
-
         """
         oxapi.api_key = "test"
         texts = ["test", "test again"]
@@ -57,13 +51,10 @@ class TestAsyncCallPipe:
             assert res[0].result is not None and res[1].result is not None
 
     def test_add_single(self, mocked_answer):
-        """
-        Testing add function (single add).
+        """Testing add function (single add).
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-        Returns:
-
         """
         oxapi.api_key = "test"
         texts = ["test", "test again"]
@@ -77,13 +68,10 @@ class TestAsyncCallPipe:
             assert res[0].result is not None and res[1].result is not None
 
     def test_add_multiple(self, mocked_answer):
-        """
-        Testing add function (multiple add).
+        """Testing add function (multiple add).
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-        Returns:
-
         """
         oxapi.api_key = "test"
         texts = ["test", "test again"]
@@ -97,10 +85,7 @@ class TestAsyncCallPipe:
             assert res[0].result is not None and res[1].result is not None
 
     def test_flush(self):
-        """Testing flush function.
-
-        Returns:
-        """
+        """Testing flush function."""
         oxapi.api_key = "test"
         texts = ["test", "test again"]
         api1 = Encoding.prepare(model="mpnet-base-v2", texts=texts)

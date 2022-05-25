@@ -65,11 +65,6 @@ class Pipeline(ModelAPI):
         except AttributeError:
             oxapi.logger.warning("Input texts are not defined")
             return None
-        try:
-            self.result
-        except AttributeError:
-            oxapi.logger.warning("Results are not available")
-            return None
         if self.result is None:
             oxapi.logger.warning("Results are not available")
             return None
