@@ -1,0 +1,212 @@
+# This file is a template, and might need editing before it works on your project.
+# see https://docs.gitlab.com/ee/ci/yaml/README.html for all available options
+
+# the default image will be used only if you have not define `image` in the stage
+# this image has docker commands installed. Since we use socket binding in Gitlab runner, we do not need docker-dind
+image: docker:20.10.5
+
+# the before_script will be run if you have not defined any before_script in the stage
+before_script:
+  - echo "Before script section"
+
+variables:
+  PYTHON_VERS: "3.8.8"
+  DOCKER_TLS_CERTDIR: "/certs"
+stages:
+  - build
+  - linting
+  - test
+  - push
+  - documentation
+
+build-development-image:
+  stage: build
+  before_script:
+    - docker info # this line will be run to be sure that you have access to docker daemon within a container
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  script:
+    # fetches the latest image (not failing if image is not found)
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - >
+      docker build
+      --pull
+      --cache-from $CI_REGISTRY_IMAGE:latest
+      --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  tags:
+    - DOCKER
+
+black:
+  stage: linting
+  image: python:$PYTHON_VERS-alpine
+  before_script:
+    - /sbin/apk add --no-cache --virtual .deps gcc musl-dev
+    - pip install black==22.3.0
+  script: black --check .
+
+isort:
+  stage: linting
+  image: registry.gitlab.com/mafda/python-linting
+  script:
+    - isort . --check-only
+
+pylint:
+  # Runs a pylint for code quality
+  # TODO: change the name from mypackage to your package/main folder name
+  stage: linting
+  image: python:$PYTHON_VERS-alpine
+  before_script:
+    - /sbin/apk add --no-cache --virtual .deps gcc musl-dev
+    - pip install pylint pylint-exit anybadge
+  script:
+    - mkdir ./pylint
+    - pylint --output-format=text mypackage | tee ./pylint/pylint.log || pylint-exit $?
+    - PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint.log)
+    - anybadge --label=Pylint --file=pylint/pylint.svg --value=$PYLINT_SCORE 2=red 4=orange 8=yellow 10=green
+    - echo "Pylint score is $PYLINT_SCORE"
+  artifacts:
+    paths:
+      - ./pylint/
+
+docformatter:
+  stage: linting
+  image: python:$PYTHON_VERS-alpine
+  before_script:
+    - /sbin/apk add --no-cache --virtual .deps gcc musl-dev
+    - pip install docformatter==1.4
+  script:
+    - docformatter --check -r .
+
+pytest:
+  stage: test
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  script: pytest -v --cov-fail-under=20 --cov=mypackage --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
+  artifacts:
+    when: always
+    paths:
+      - "tests/coverage"
+    reports:
+      junit: tests/report.xml
+  coverage: '/^TOTAL.+?(\d+\%)$/'
+  tags:
+    - CPU
+
+sonarqube-check:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+    SONAR_HOST_URL: "${SONAR_HOST_URL}"
+    SONAR_TOKEN: "${SONAR_TOKEN}"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.projectKey="${CI_PROJECT_NAME}"
+  allow_failure: true
+
+docker-hadolint:
+  stage: linting
+  image: hadolint/hadolint:latest-debian
+  script:
+    - mkdir -p reports
+    - hadolint --ignore DL3008 --ignore DL3013 -f gitlab_codeclimate Dockerfile > reports/hadolint-$(md5sum Dockerfile | cut -d" " -f1).json
+  artifacts:
+    name: "$CI_JOB_NAME artifacts from $CI_PROJECT_NAME on $CI_COMMIT_REF_SLUG"
+    expire_in: 1 day
+    when: always
+    reports:
+      codequality:
+        - "reports/*"
+    paths:
+      - "reports/*"
+
+# Here, the goal is to tag the "main" branch as "latest"
+Push latest:
+  variables:
+    # We are just playing with Docker here.
+    # We do not need GitLab to clone the source code.
+    GIT_STRATEGY: none
+  stage: push
+  only:
+    # Only "main" should be tagged "latest"
+    - main
+  before_script:
+    - docker info # this line will be run to be sure that you have access to docker daemon within a container
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  script:
+    # Because we have no guarantee that this job will be picked up by the same runner
+    # that built the image in the previous step, we pull it again locally
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    # Then we tag it "latest"
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
+    # And we push it.
+    - docker push $CI_REGISTRY_IMAGE:latest
+  tags:
+    - DOCKER
+
+# Finally, the goal here is to Docker tag any Git tag
+# GitLab will start a new pipeline everytime a Git tag is created, which is pretty awesome
+Push tag:
+  variables:
+    # we do not need the source code here. Just playing with Docker.
+    GIT_STRATEGY: none
+  stage: push
+  only:
+    # We want this job to be run on tags only.
+    - tags
+  before_script:
+    - docker info # this line will be run to be sure that you have access to docker daemon within a container
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  tags:
+    - DOCKER
+
+build-package:
+  only:
+    - main
+  stage: push
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  variables:
+    TWINE_USERNAME: "${TWINE_USERNAME}"
+    TWINE_PASSWORD: "${TWINE_PASSWORD}"
+  before_script:
+    - apt-get update
+    - apt-get install python3.8-venv
+  script:
+    - pip install build twine
+    - python -m build
+    - twine upload -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
+
+pages:
+  stage: documentation
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  only:
+    - main
+  script:
+    - cd docs_src
+    - sphinx-apidoc -o apidoc/ -H "API" -f ../mypackage
+    - make html
+    - cp -r _build/html/ ../public/
+  artifacts:
+    paths:
+      - public
+
+upload-to-s3:
+  stage: documentation
+  only:
+    - main
+  needs:
+    - pages
+  image:
+    name: banst/awscli
+    entrypoint: [""]
+  script:
+    - aws configure set region us-east-1
+    - aws s3 sync public/ s3://github-python-project-template-doc/

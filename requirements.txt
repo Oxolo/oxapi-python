@@ -1,0 +1,32 @@
+# requirements.txt and the 'install_requires' section of setup.py look similar, but they aim at slightly different goals.
+#
+# - setup.py contains the list of dependencies for the _execution_ of of the project.
+#   This means that ancillary packages, like those related to sphinx, should not be included.
+#   Also, included packages should report a fixed version, with whom the project has been tested.
+#   setup.py is used when installing the project via `pip install ...`
+#
+# - requirements.txt contains the list of dependencies for the development.
+#   For example, the requirements for the documentation (sphinx) belong to requirements.txt, while
+#  they are not included in setup.py.
+#  Also, packages in requirements.txt can be listed without any version. But it is a good practice to
+#  always fix the version
+
+# example
+ConfigArgParse==1.5.3
+numpy==1.22.3
+
+# Requirements for testing (using unittest)
+pytest==7.1.0
+pytest-cov==3.0.0
+black==22.1.0
+pylint==2.12.2
+
+# Requirements for documentation
+docutils==0.17
+Sphinx==4.4.0
+sphinxcontrib-napoleon==0.7
+sphinxcontrib-websupport==1.2.4
+sphinx_rtd_theme==1.0.0
+m2r2==0.3.2
+
+
