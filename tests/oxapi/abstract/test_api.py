@@ -143,4 +143,3 @@ class TestModelAPI:
         ):
             api = Classification.create(model="dialog-content-filter", texts=["dizio"])
             assert isinstance(str(api), str)
-
