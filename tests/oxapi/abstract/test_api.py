@@ -114,6 +114,21 @@ class TestModelAPI:
                     texts=[],
                 )
 
+    def test_general_error_to_str(self):
+        """Testing general OxAPIError exception raising."""
+        oxapi.api_key = "test"
+        with mock.patch(
+            "oxapi.abstract.api.grequests.map",
+            return_value=[TestModelAPI.build_mocked_error(500)],
+        ):
+            try:
+                api = Classification.create(
+                    model="dialog-tag",
+                    texts=[],
+                )
+            except OxAPIError as oe:
+                assert isinstance(str(oe), str)
+
     def test_str(self, mocked_answer_classification):
         """Testing __str__ function.
 
