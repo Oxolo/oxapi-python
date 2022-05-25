@@ -6,9 +6,8 @@ import pytest
 import oxapi
 from oxapi.error import ModelNotFoundException
 from oxapi.nlp.transformation import Transformation
+from oxapi.utils import OxapiNLPTransformationModel, OxapiType
 from tests.testing_utils import MockedResponse
-
-from oxapi.utils import OxapiType, OxapiNLPTransformationModel
 
 
 class TestTransformation:
@@ -38,8 +37,7 @@ class TestTransformation:
             assert api.result is not None
 
     def test_prepare(self):
-        """Testing prepare function.
-        """
+        """Testing prepare function."""
         oxapi.api_key = "test"
         api = Transformation.prepare(model="punctuation-imputation", texts=["test"])
         assert isinstance(api, Transformation) and api.result is None

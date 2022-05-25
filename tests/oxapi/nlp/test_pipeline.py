@@ -5,9 +5,8 @@ import pytest
 import oxapi
 from oxapi.error import ModelNotFoundException
 from oxapi.nlp.pipeline import Pipeline
+from oxapi.utils import OxapiNLPPipelineModel, OxapiType
 from tests.testing_utils import MockedResponse
-
-from oxapi.utils import OxapiType, OxapiNLPPipelineModel
 
 
 class TestPipeline:
@@ -39,8 +38,7 @@ class TestPipeline:
             assert api.result is not None
 
     def test_prepare(self):
-        """Testing prepare function.
-        """
+        """Testing prepare function."""
         oxapi.api_key = "test"
         api = Pipeline.prepare(model="en-core-web-lg", texts=["test"])
         assert isinstance(api, Pipeline) and api.result is None

@@ -6,9 +6,8 @@ import pytest
 import oxapi
 from oxapi.error import ModelNotFoundException
 from oxapi.nlp.classification import Classification
+from oxapi.utils import OxapiNLPClassificationModel, OxapiType
 from tests.testing_utils import MockedResponse
-
-from oxapi.utils import OxapiType, OxapiNLPClassificationModel
 
 
 class TestClassification:
@@ -43,9 +42,7 @@ class TestClassification:
             assert api.result is not None
 
     def test_prepare(self):
-        """Testing prepare function.
-
-        """
+        """Testing prepare function."""
         oxapi.api_key = "test"
         api = Classification.prepare(model="dialog-tag", texts=["test"])
         assert isinstance(api, Classification) and api.result is None

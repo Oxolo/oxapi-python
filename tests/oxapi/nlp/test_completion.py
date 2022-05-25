@@ -6,9 +6,8 @@ import pytest
 import oxapi
 from oxapi.error import ModelNotFoundException
 from oxapi.nlp.completion import Completion
-from tests.testing_utils import MockedResponse
-
 from oxapi.utils import OxapiNLPCompletionModel, OxapiType
+from tests.testing_utils import MockedResponse
 
 
 class TestCompletion:
@@ -41,9 +40,7 @@ class TestCompletion:
             assert api.result is not None
 
     def test_prepare(self):
-        """Testin prepare function.
-
-        """
+        """Testin prepare function."""
         oxapi.api_key = "test"
         api = Completion.prepare(
             model="gpt-neo-2-7b", prompt="Nobody is such a good programmer"
@@ -157,7 +154,7 @@ class TestCompletion:
         """
         oxapi.api_key = "test"
         with mock.patch(
-                "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
+            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
         ):
             api = Completion.create(
                 model="gpt-neo-2-7b",

@@ -6,9 +6,8 @@ import pytest
 import oxapi
 from oxapi.error import ModelNotFoundException
 from oxapi.nlp.encoding import Encoding
+from oxapi.utils import OxapiNLPEncodingModel, OxapiType
 from tests.testing_utils import MockedResponse
-
-from oxapi.utils import OxapiType, OxapiNLPEncodingModel
 
 
 class TestEncoding:
@@ -42,9 +41,7 @@ class TestEncoding:
             assert api.result is not None
 
     def test_prepare(self):
-        """Testing prepare function.
-
-        """
+        """Testing prepare function."""
         oxapi.api_key = "test"
         api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
         assert isinstance(api, Encoding) and api.result is None
