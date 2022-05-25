@@ -18,12 +18,12 @@ sys.path.insert(0, os.path.abspath(".."))
 
 # -- Project information -----------------------------------------------------
 
-project = "Python Project Template"
-copyright = "2021, Naser Derakhshan"
-author = "Naser Derakhshan"
+project = "OxAPI Python SDK"
+copyright = ""
+author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = "v1.0.0"
+release = "v0.0.2"
 
 # -- General configuration ---------------------------------------------------
 

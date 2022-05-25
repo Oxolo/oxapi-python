@@ -1,55 +1,283 @@
-# python-project-template
+# OxAPI Python Library
 
-A python project template for GitHub Repos. This project has a mirror in our private Gitlab server here: https://git.oxolo.com/development/github/python-project-template
-You can check the status of the CI pipelines there. never push a change to the mirror!
+The OxAPI Python library provides simplified access to the OxAPI
+from applications written in the Python language.
 
-## Formatting
-To format the python files in the project run the following command in the root folder:
-```shell
-# black formatting
-black .
+## Documentation
 
-# comments and docstring formatting
-docformatter --in-place -r .
+See the [OxAPI documentation](https://api.oxolo.com/documentation) .
 
-# imports formatting
-isort .
+Access to repo doc: http://github-oxapi-python-doc.s3-website.eu-central-1.amazonaws.com
 
-# run hadolint for Dockerfile linting - consider addressing errors before pushing
-docker run --rm -i hadolint/hadolint < Dockerfile
-# 
+## Installation
+
+You don't need this source code unless you want to modify the package. If you just
+want to use the package, just run:
+
+```sh
+pip install --upgrade oxapi-python
 ```
 
-## Documentation:
-The static website will be hosted on S3 bucket. For each new project:
-1. Create a new S3 bucket and enable public access
-2. enable website hosting from Bucket Properties => Static website hosting 
-3. enable new bucket policy from permissions => Bucket policy:
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicReadGetObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::BUCKET-NAME/*"
-        }
-    ]
+Install from source with:
+
+```sh
+python setup.py install
+```
+
+### Package structure
+
+```
+├── oxapi
+│   ├── abstract                
+│   │   └── api.py              # Non-instantiable, super classes for API calls
+│   ├── nlp                     
+│   │   ├── classification.py   # NLP Classification package
+│   │   ├── completion.py       # NLP Completion package
+│   │   ├── encoding.py         # NLP Encoding package
+│   │   ├── pipeline.py         # NLP Pipeline package
+│   │   └── transformation.py   # NLP Transformation package
+│   ├── utils.py                # General utilities
+│   ├── asynch.py               # package for asynchronous API calls
+│   └── error.py                # Custom exceptions module
+├── tests                       # Tests
+└── docs_src                    # Documentation source files
+```
+
+
+## Usage
+
+### API key
+
+The library needs to be configured with your account's secret key. Either set it as the `OXAPI_KEY` environment variable before using the library:
+
+```bash
+export OXAPI_KEY='sk-...'
+```
+
+Or set `oxapi.api_key` to its value:
+
+```python
+import oxapi
+oxapi.api_key = "sk-..."
+```
+
+### Completion
+
+```python
+from oxapi.nlp.completion import Completion
+
+# Performing API call
+
+completion = Completion.create(
+    model="gpt-neo-2-7b", 
+    prompt="My name is Tim.\nSentiment: Neutral\nIt is such a lovely day.\nSentiment: Positive\nAlthough I am in a bad mood\nSentiment:",
+    max_length=2, 
+    do_sample=False, 
+    eos_words=["\n"]
+)
+
+# Fetching result
+
+res = completion.format_result(result_format="str")
+
+print(completion.result)
+```
+
+Output:
+```python
+' Neutral\n'
+```
+
+### Classification
+
+```python
+from oxapi.nlp.classification import Classification
+
+# Performing API call
+
+classification = Classification.create(
+    model="dialog-content-filter", 
+    texts=["I want to kill myself.", "I want to kill myself.<sep>You should not do that!", "I want to kill myself.<sep>Do it!"]
+)
+
+# Fetching result
+
+res = classification.format_result(result_format="pandas")
+
+print(res)
+```
+
+Output:
+```python
+                                                text label          confidence_score
+0                             I want to kill myself.  unsafe      0.9772329101403038
+1  I want to kill myself.<sep>You should not do t...  safe        0.9736578740966625
+2                  I want to kill myself.<sep>Do it!  unsafe      0.9266854663680397
+```
+
+### Encoding
+
+```python
+from oxapi.nlp.encoding import Encoding
+
+# Performing API call
+
+encoding = Encoding.create(
+    model="mpnet-base-v2",
+    texts=["Hello", "How are you?"]
+)
+
+# Fetching result
+
+print(encoding.result)
+```
+
+Output:
+```python
+{'results': [[
+   -0.017791748046875,
+   -2.980232238769531e-07,
+   -0.022003173828125,
+   0.02105712890625,
+   -0.06695556640625,
+   -0.02435302734375,
+   -0.0174713134765625,
+   ...
+    -0.0011529922485351562]]
 }
 ```
-`BUCET-NAME` for this project is `github-python-project-template-doc`
-5. Change the upload-to-s3 job in `.gitlab-ci.yml` file and use the BUCKET-NAME you created
-6. Check the website endpoint from the Bucket Properties => Static website hosting. 
 
-The URL to pages for this template is http://github-python-project-template-doc.s3-website-us-east-1.amazonaws.com/
+### Transformation
 
-7. You can also configure static domain name as explained here: https://docs.aws.amazon.com/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html
+```python
+from oxapi.nlp.transformation import Transformation
 
-## Package Versioning
-for each new change please update the package version in `setup.py`. Please follow  [semantic versioning](https://semver.org/): Given a version number `MAJOR.MINOR.PATCH`, increment the:
+# Performing API call
 
-      1. **MAJOR** version when you make incompatible API changes,
-      2. **MINOR** version when you add functionality in a backwards compatible manner, and
-      3. **PATCH** version when you make backwards compatible bug fixes.
+transformation = Transformation.create(
+    model="punctuation-imputation", 
+    texts=["hello my name is tim i just came back from nyc how are you doing"]
+)
+
+# Fetching result
+
+print(transformation.result)
+```
+
+Output:
+```python
+{'results': ['Hello my name is Tim. I just came back from NYC. How are you doing?']}
+```
+
+### Pipeline
+
+```python
+from oxapi.nlp.pipeline import Pipeline
+
+# Performing API call
+
+pipeline = Pipeline.create(
+    model="en-core-web-lg",
+    texts=["Hi there!"]
+)
+
+# Fetching result
+
+print(pipeline.result)
+```
+
+Output:
+```python
+{'results': [{'text': 'Hi there!',
+   'ents': [],
+   'sents': [{'start': 0, 'end': 9}],
+   'tokens': [{'id': 0,
+     'start': 0,
+     'end': 2,
+     'tag': 'UH',
+     'pos': 'INTJ',
+     'morph': '',
+     'lemma': 'hi',
+     'dep': 'ROOT',
+     'head': 0},
+    {'id': 1,
+     'start': 3,
+     'end': 8,
+     'tag': 'RB',
+     'pos': 'ADV',
+     'morph': 'PronType=Dem',
+     'lemma': 'there',
+     'dep': 'advmod',
+     'head': 0},
+    {'id': 2,
+     'start': 8,
+     'end': 9,
+     'tag': '.',
+     'pos': 'PUNCT',
+     'morph': 'PunctType=Peri',
+     'lemma': '!',
+     'dep': 'punct',
+     'head': 0}],
+   'sents_text': ['Hi there!']}]
+}
+```
+
+### Asynchronous call pipeline
+
+With ```oxapi-python``` package is possible to make calls to OxAPI in parallel. The ```AsynchronousCallPipe``` class takes as input a list of API calls each set through the ```prepare``` function to be executed by the pipeline.
+
+```python
+from oxapi.asynch import AsynchronousCallPipe
+
+from oxapi.nlp.completion import Completion
+from oxapi.nlp.classification import Classification
+from oxapi.nlp.transformation import Transformation
+from oxapi.nlp.pipeline import Pipeline
+
+# Set up API calls
+
+cl = Classification.prepare(model="dialog-content-filter", texts=texts=["I want to kill myself."])
+cm = Completion.prepare(model="gpt-neo-2-7b", prompt="Hello there, ", max_length=25, do_sample=True, eos_words=["\n"])
+tr = Transformation.prepare(model="punctuation-imputation", texts=["hello my name is tim i just came back from nyc how are you doing"])
+pl = Pipeline.prepare(model="en-core-web-lg", texts=["Hi there!"])
+
+# Building and running the asynchronous pipe
+
+asy = AsynchronousCallPipe([cl, cm, tr, pl])
+res = asy.run()
+
+# Fetching the result of the first call in the list
+
+print(res[0]..format_result(result_format="pandas"))
+```
+
+Output:
+```python
+                                                text label          confidence_score
+0                             I want to kill myself.  unsafe      0.9772329101403038
+```
+
+It is possible to add API calls to the asynchronous pipe even after its instantiation though the ```add``` function. There's also the ```flush``` function to clear the list in the pipe.
+
+```python
+from oxapi.asynch import AsynchronousCallPipe
+from oxapi.nlp.encoding import Encoding
+
+# Instantiate an empty asynchornous pipe
+
+asy = AsynchronousCallPipe()
+
+# Set up API call and add it to the pipe
+
+en = Encoding.prepare(model="mpnet-base-v2", texts=["Hello", "How are you?"])
+asy.add(en)
+
+# running the asynchronous pipe
+
+res = asy.run()
+```
+
+
+## Credit
+
+

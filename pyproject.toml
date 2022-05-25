@@ -204,7 +204,7 @@ indent-after-paren = 4
 [tool.pylint.reports]
 # Set the output format. Available formats are text, parseable, colorized, msvs
 # (visual studio) and html. You can also give a reporter class, eg
-# mypackage.mymodule.MyReporterClass.
+# oxapi.mymodule.MyReporterClass.
 output-format = "text"
 
 # Put messages in a separate file for each module / package specified on the
@@ -319,3 +319,4 @@ valid-metaclass-classmethod-first-arg = "mcs"
 [tool.pylint.exceptions]
 # Exceptions that will emit a warning when being caught. Defaults to "Exception"
 overgeneral-exceptions = "StandardError,Exception,BaseException"
+

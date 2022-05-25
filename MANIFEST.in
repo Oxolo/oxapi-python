@@ -1,4 +1,2 @@
-recursive-include examples/
-recursive-include research/
 recursive-include tests/
 include README.md

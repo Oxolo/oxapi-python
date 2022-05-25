@@ -4,13 +4,13 @@ https://docs.python.org/3.7/distutils/setupscript.html."""
 
 from setuptools import setup
 
-NAME = "pptemplate"
-VERSION = "1.0.3"
-DESCRIPTION = "This is a template project for python. You can change it on will to match your requirements"
-AUTHOR = "Naser Derakhshan"
-AUTHOR_EMAIL = "n.derakhshan@oxolo.com"
-PACKAGES = ["mypackage"]
-INSTALL_REQUIRES = ["ConfigArgParse==1.5.3", "numpy==1.22.3"]
+NAME = "oxapi-python"
+VERSION = "0.0.2"
+DESCRIPTION = "The OxAPI Python library provides simplified access to the OxAPI from applications written in the Python language."
+AUTHOR = ""
+AUTHOR_EMAIL = ""
+PACKAGES = ["oxapi"]
+INSTALL_REQUIRES = ["grequests>=0.6.0", "numpy>=1.17", "pandas>=1.3"]
 
 setup(
     name=NAME,

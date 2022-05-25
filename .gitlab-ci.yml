@@ -124,7 +124,7 @@ docker-hadolint:
     paths:
       - "reports/*"
 
-# Here, the goal is to tag the "main" branch as "latest"
+# Here, the goal is to tag the "master" branch as "latest"
 Push latest:
   variables:
     # We are just playing with Docker here.
@@ -132,8 +132,8 @@ Push latest:
     GIT_STRATEGY: none
   stage: push
   only:
-    # Only "main" should be tagged "latest"
-    - main
+    # Only "master" should be tagged "latest"
+    - master
   before_script:
     - docker info # this line will be run to be sure that you have access to docker daemon within a container
     - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
@@ -147,6 +147,22 @@ Push latest:
     - docker push $CI_REGISTRY_IMAGE:latest
   tags:
     - DOCKER
+
+build-package:
+  only:
+    - main
+  stage: push
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  variables:
+    TWINE_USERNAME: "${TWINE_USERNAME}"
+    TWINE_PASSWORD: "${TWINE_PASSWORD}"
+  before_script:
+    - apt-get update
+    - apt-get install python3.8-venv
+  script:
+    - pip install build twine
+    - python -m build
+    - twine upload -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
 
 # Finally, the goal here is to Docker tag any Git tag
 # GitLab will start a new pipeline everytime a Git tag is created, which is pretty awesome
@@ -168,27 +184,11 @@ Push tag:
   tags:
     - DOCKER
 
-build-package:
-  only:
-    - main
-  stage: push
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-  variables:
-    TWINE_USERNAME: "${TWINE_USERNAME}"
-    TWINE_PASSWORD: "${TWINE_PASSWORD}"
-  before_script:
-    - apt-get update
-    - apt-get install python3.8-venv
-  script:
-    - pip install build twine
-    - python -m build
-    - twine upload -u $TWINE_USERNAME -p $TWINE_PASSWORD dist/*
-
 pages:
   stage: documentation
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   only:
-    - main
+    - master
   script:
     - cd docs_src
     - sphinx-apidoc -o apidoc/ -H "API" -f ../mypackage
@@ -209,4 +209,5 @@ upload-to-s3:
     entrypoint: [""]
   script:
     - aws configure set region us-east-1
-    - aws s3 sync public/ s3://github-python-project-template-doc/
+    - aws s3 sync public/ s3://github-oxapi-python-doc/
+
