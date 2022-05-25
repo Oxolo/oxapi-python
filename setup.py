@@ -9,7 +9,7 @@ from setuptools import setup
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-NAME = "oxapi-python"
+NAME = "oxapi"
 VERSION = config["DEFAULT"]["version"]
 DESCRIPTION = ""
 AUTHOR = ""

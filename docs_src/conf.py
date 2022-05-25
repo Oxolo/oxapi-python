@@ -23,7 +23,7 @@ copyright = ""
 author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = "v0.0.3"
+release = "v0.0.4"
 
 # -- General configuration ---------------------------------------------------
 
