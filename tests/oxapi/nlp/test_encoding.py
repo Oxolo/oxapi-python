@@ -26,12 +26,10 @@ class TestEncoding:
         )
 
     def test_create(self, mocked_answer):
-        """
-        Testing create function.
+        """Testing create function.
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -47,12 +45,10 @@ class TestEncoding:
         assert isinstance(api, Encoding) and api.result is None
 
     def test_format_result_numpy(self, mocked_answer):
-        """
-        Testing format_result function (numpy format).
+        """Testing format_result function (numpy format).
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -64,12 +60,10 @@ class TestEncoding:
         assert isinstance(res, np.ndarray)
 
     def test_format_result_dict(self, mocked_answer):
-        """
-        Testing format_result function (dict format).
+        """Testing format_result function (dict format).
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -81,12 +75,10 @@ class TestEncoding:
         assert isinstance(res, dict)
 
     def test_format_result_wrong_format(self, mocked_answer):
-        """
-        Testing format_result function (wrong format).
+        """Testing format_result function (wrong format).
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -98,35 +90,24 @@ class TestEncoding:
             res = api.format_result("dino")
 
     def test_list_models(self):
-        """
-        Testing list_model function
-
-        """
+        """Testing list_model function."""
         models = Encoding.list_models()
         assert isinstance(Encoding.list_models(), list) and len(models) > 0
 
     def test_wrong_model_input(self):
         """Testing exception raising when passed as input a non-existing model
-        name.
-
-        """
+        name."""
         with pytest.raises(ModelNotFoundException):
             api = Encoding.create(model="best-encoding-model-ever", texts=["text"])
 
     def test_none_result(self):
-        """
-        Testing format_result function when result doesn't exist yet
-
-        """
+        """Testing format_result function when result doesn't exist yet."""
         oxapi.api_key = "test"
         api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
         assert api.format_result() is None
 
     def test_input_texts_not_defined(self):
-        """
-        Testing format_result function when input doesn't exist yet
-
-        """
+        """Testing format_result function when input doesn't exist yet."""
         oxapi.api_key = "test"
         api = Encoding(
             model=OxapiNLPEncodingModel("mpnet-base-v2"),

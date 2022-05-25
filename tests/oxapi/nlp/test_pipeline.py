@@ -24,11 +24,10 @@ class TestPipeline:
         )
 
     def test_create(self, mocked_answer):
-        """
-        Testing create function.
+        """Testing create function.
+
         Args:
             mocked_answer: the mocked answer from grequests.
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -76,35 +75,24 @@ class TestPipeline:
             res = api.format_result("dino")
 
     def test_list_models(self):
-        """
-        Testing list_model function
-
-        """
+        """Testing list_model function."""
         models = Pipeline.list_models()
         assert isinstance(Pipeline.list_models(), list) and len(models) > 0
 
     def test_wrong_model_input(self):
         """Testing exception raising when passed as input a non-existing model
-        name.
-
-        """
+        name."""
         with pytest.raises(ModelNotFoundException):
             api = Pipeline.create(model="best-pipeline-ever", texts=["text"])
 
     def test_none_result(self):
-        """
-        Testing format_result function when result doesn't exist yet
-
-        """
+        """Testing format_result function when result doesn't exist yet."""
         oxapi.api_key = "test"
         api = Pipeline.prepare(model="en-core-web-lg", texts=["test"])
         assert api.format_result() is None
 
     def test_input_texts_not_defined(self):
-        """
-        Testing format_result function when input doesn't exist yet
-
-        """
+        """Testing format_result function when input doesn't exist yet."""
         oxapi.api_key = "test"
         api = Pipeline(
             model=OxapiNLPPipelineModel("en-core-web-lg"),
