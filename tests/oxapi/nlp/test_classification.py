@@ -24,6 +24,16 @@ class TestClassification:
             status_code=200, message={"results": [["mocked_label", 1.0]]}
         )
 
+    @pytest.fixture
+    def mocked_answer_dialog_topic(self):
+        """Creates mocked response for testing purposes, specifically for
+        dialog-topic model.
+
+        Returns:
+            list : mocked answers
+        """
+        return MockedResponse(status_code=200, message={"results": ["mocked_label"]})
+
     def test_create(self, mocked_answer):
         """Testing create function.
 
@@ -127,3 +137,21 @@ class TestClassification:
             oxapi_type=OxapiType.NLP,
         )
         assert api.format_result() is None
+
+    def test_dialog_topic_model(self, mocked_answer_dialog_topic):
+        """
+        Testing dialog-topic specific result.
+        Args:
+            mocked_answer_dialog_topic:
+
+        Returns:
+
+        """
+        oxapi.api_key = "test"
+        with mock.patch(
+            "oxapi.abstract.api.grequests.map",
+            return_value=[mocked_answer_dialog_topic],
+        ):
+            api = Classification.create(model="dialog-topic", texts=["esposito"])
+
+        assert isinstance(api.format_result("dict"), dict)
