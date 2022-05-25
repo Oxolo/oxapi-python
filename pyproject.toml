@@ -319,4 +319,3 @@ valid-metaclass-classmethod-first-arg = "mcs"
 [tool.pylint.exceptions]
 # Exceptions that will emit a warning when being caught. Defaults to "Exception"
 overgeneral-exceptions = "StandardError,Exception,BaseException"
-

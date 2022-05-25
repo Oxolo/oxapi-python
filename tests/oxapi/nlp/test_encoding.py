@@ -1,17 +1,16 @@
 import unittest.mock as mock
-from typing import List
 
-import pandas as pd
+import numpy as np
 import pytest
 
 import oxapi
 from oxapi.error import ModelNotFoundException
-from oxapi.nlp.classification import Classification
+from oxapi.nlp.encoding import Encoding
 from tests.testing_utils import MockedResponse
 
 
-class TestClassification:
-    """Tests for Classification class."""
+class TestEncoding:
+    """Tests for Encoding class."""
 
     @pytest.fixture
     def mocked_answer(self):
@@ -21,7 +20,8 @@ class TestClassification:
             list : mocked answers
         """
         return MockedResponse(
-            status_code=200, message={"results": [["mocked_label", 1.0]]}
+            status_code=200,
+            message={"results": [[1.0, 1.1, 1.2, 1.3], [1.0, 1.1, 1.2, 1.3]]},
         )
 
     def test_create(self, mocked_answer):
@@ -34,13 +34,10 @@ class TestClassification:
 
         """
         oxapi.api_key = "test"
-
         with mock.patch(
             "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
         ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
             assert api.result is not None
 
     def test_prepare(self):
@@ -49,12 +46,12 @@ class TestClassification:
         Returns:
         """
         oxapi.api_key = "test"
-        api = Classification.prepare(model="dialog-tag", texts=["test"])
-        assert isinstance(api, Classification) and api.result is None
+        api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
+        assert isinstance(api, Encoding) and api.result is None
 
-    def test_format_result_pandas(self, mocked_answer):
+    def test_format_result_numpy(self, mocked_answer):
         """
-        Testing format_result function (pandas format)
+        Testing format_result function (numpy format).
         Args:
             mocked_answer: the mocked answer from grequests.
 
@@ -65,16 +62,14 @@ class TestClassification:
         with mock.patch(
             "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
         ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result()
-        assert isinstance(res, pd.DataFrame)
+        assert isinstance(res, np.ndarray)
 
     def test_format_result_dict(self, mocked_answer):
         """
-        Testing format_results function (dict format).
+        Testing format_result function (dict format).
         Args:
             mocked_answer: the mocked answer from grequests.
 
@@ -85,16 +80,14 @@ class TestClassification:
         with mock.patch(
             "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
         ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result("dict")
         assert isinstance(res, dict)
 
     def test_format_result_wrong_format(self, mocked_answer):
         """
-        Testing format_results function (wrong format).
+        Testing format_result function (wrong format).
         Args:
             mocked_answer: the mocked answer from grequests.
 
@@ -105,9 +98,7 @@ class TestClassification:
         with mock.patch(
             "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
         ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:
             res = api.format_result("dino")
@@ -118,8 +109,8 @@ class TestClassification:
         Returns:
 
         """
-        models = Classification.list_models()
-        assert isinstance(Classification.list_models(), list) and len(models) > 0
+        models = Encoding.list_models()
+        assert isinstance(Encoding.list_models(), list) and len(models) > 0
 
     def test_wrong_model_input(self):
         """Testing exception raising when passed as input a non-existing model
@@ -128,6 +119,4 @@ class TestClassification:
         Returns:
         """
         with pytest.raises(ModelNotFoundException):
-            api = Classification.create(
-                model="best-classification-model-ever", texts=["text"]
-            )
+            api = Encoding.create(model="best-encoding-model-ever", texts=["text"])

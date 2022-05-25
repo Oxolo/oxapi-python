@@ -4,7 +4,8 @@ import pandas as pd
 
 import oxapi
 from oxapi.abstract.api import ModelAPI
-from oxapi.utils import OxapiType
+from oxapi.error import ModelNotFoundException
+from oxapi.utils import OxapiNLPCompletionModel, OxapiType
 
 
 class Completion(ModelAPI):
@@ -18,7 +19,6 @@ class Completion(ModelAPI):
         api_version: str = None,
         version: str = None,
         verbose: bool = False,
-        mock_answer: bool = False,
         raise_exceptions: bool = True,
         **kwargs
     ):
@@ -30,21 +30,21 @@ class Completion(ModelAPI):
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
             verbose (bool): optional, True to enable verbose mode
-            mock_answer (bool): optional, True to have in return a mocked answer for testing purposes
-            raise_exceptions (bool): defult True, set to False to disable the raising of exceptions in case of error - \
+            raise_exceptions (bool): deafult True, set to False to disable the raising of exceptions in case of error - \
                 you will be receiving only warnings.
             **kwargs: additional parameters for the API call. See the OxAPI documentation: https://api.oxolo.com/documentation#parameters
         Returns:
             Completion : an object of Completion class for fetching the result.
 
         """
+        Completion.__check_input_model(model)
         body = kwargs
         body["prompt"] = prompt
-        version = version if version is not None else "v1"
-        api_version = oxapi.api_version if api_version is None else api_version
+        version = version if version is not None else oxapi.default_model_version
+        api_version = oxapi.default_api_version if api_version is None else api_version
         api = cls(
             oxapi_type=OxapiType.NLP,
-            model=model,
+            model=OxapiNLPCompletionModel(model),
             api_version=api_version,
             version=version,
         )
@@ -60,10 +60,10 @@ class Completion(ModelAPI):
         """
         Function for getting the result processed in the available formats.
         Args:
-            result_format (str): default 'str', desired format for the output. Available formats are: ['str', 'dict'].
+            result_format (str): default 'str', desired format for the output. Available formats are: ['str', 'pd'].
 
         Returns:
-            Union[str, dict, None] : the result in the desired format; None if no result is available.
+            Union[str, pandas.DataFrame, None] : the result in the desired format; None if no result is available.
         """
         try:
             self.prompt
@@ -78,7 +78,8 @@ class Completion(ModelAPI):
         if self.result is None:
             oxapi.logger.warning("Results are not available")
             return None
-        if result_format == "pandas":
+
+        if result_format == "pd":
             tmp_in = pd.DataFrame([self.prompt], columns=["prompt"])
             tmp_out = pd.DataFrame(self.result["results"], columns=["output"])
             return pd.concat([tmp_in, tmp_out], axis=1)
@@ -87,7 +88,7 @@ class Completion(ModelAPI):
         else:
             raise ValueError(
                 "{0} is not a valid format for the output.\
-            Available formats: ['pandas', 'dict']".format(
+            Available formats: ['str', 'pd']".format(
                     result_format
                 )
             )
@@ -109,19 +110,19 @@ class Completion(ModelAPI):
             prompt (str): the prompt to be passed to the Completion model.
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
-            mock_answer (bool): optional, True to have in return a mocked answer for testing purposes
             **kwargs: additional parameters for the API call. See the OxAPI documentation: https://api.oxolo.com/documentation#parameters
         Returns:
             Completion : an object of Completion class having the parameters set.
 
         """
+        Completion.__check_input_model(model)
         body = kwargs
         body["prompt"] = prompt
-        version = version if version is not None else "v1"
-        api_version = oxapi.api_version if api_version is None else api_version
+        version = version if version is not None else oxapi.default_model_version
+        api_version = oxapi.default_api_version if api_version is None else api_version
         api = cls(
             oxapi_type=OxapiType.NLP,
-            model=model,
+            model=OxapiNLPCompletionModel(model),
             api_version=api_version,
             version=version,
         )
@@ -135,5 +136,23 @@ class Completion(ModelAPI):
         Returns:
 
         """
-        # TODO: remove stub
-        pass
+        return [o.value for o in OxapiNLPCompletionModel]
+
+    @staticmethod
+    def __check_input_model(model_string: str):
+        """
+        Internal function for checking if the input model name exists in OxAPI.
+        Args:
+            model_string: the input model name.
+
+        Returns:
+
+        """
+        try:
+            OxapiNLPCompletionModel(model_string)
+        except ValueError:
+            raise ModelNotFoundException(
+                "'{0}' is not a valid model for OxAPI Completion. Available models are {1}".format(
+                    model_string, str(Completion.list_models())
+                )
+            )

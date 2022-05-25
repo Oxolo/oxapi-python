@@ -4,7 +4,8 @@ import numpy as np
 
 import oxapi
 from oxapi.abstract.api import ModelAPI
-from oxapi.utils import OxapiType
+from oxapi.error import ModelNotFoundException
+from oxapi.utils import OxapiNLPEncodingModel, OxapiType
 
 
 class Encoding(ModelAPI):
@@ -18,7 +19,6 @@ class Encoding(ModelAPI):
         api_version: str = None,
         version: str = None,
         verbose: bool = False,
-        mock_answer: bool = False,
         raise_exceptions: bool = True,
     ):
         """
@@ -29,21 +29,20 @@ class Encoding(ModelAPI):
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
             verbose (bool): optional, True to enable verbose mode
-            mock_answer (bool): optional, True to have in return a mocked answer for testing purposes
-            raise_exceptions (bool): defult True, set to False to disable the raising of exceptions in case of error -
+            raise_exceptions (bool): default True, set to False to disable the raising of exceptions in case of error -
                 you will be receiving only warnings.
 
         Returns:
             Encoding : an object of Encoding class for fetching the result.
 
         """
-        api_version = oxapi.api_version if api_version is None else api_version
-        # TODO: hardcoding to be removed, we should implement "latest" logic
-        version = version if version is not None else "v1"
+        Encoding.__check_input_model(model)
+        api_version = oxapi.default_api_version if api_version is None else api_version
+        version = version if version is not None else oxapi.default_model_version
         body = {"texts": texts}
         api = cls(
             oxapi_type=OxapiType.NLP,
-            model=model,
+            model=OxapiNLPEncodingModel(model),
             api_version=api_version,
             version=version,
         )
@@ -53,13 +52,11 @@ class Encoding(ModelAPI):
         api.set_params(result=res.json() if res is not None else res, input_texts=texts)
         return api
 
-    def format_result(
-        self, result_format: str = "numpy"
-    ) -> Union[np.ndarray, dict, None]:
+    def format_result(self, result_format: str = "np") -> Union[np.ndarray, dict, None]:
         """
         Function for getting the result processed in the available formats.
         Args:
-            result_format (str): default 'numpy', desired format for the output. Available formats are: ['numpy', 'dict'].
+            result_format (str): default 'np', desired format for the output. Available formats are: ['np', 'dict'].
 
         Returns:
             Union[numpy.ndarray, dict, None] : the result in the desired format; None if no result is available.
@@ -78,7 +75,7 @@ class Encoding(ModelAPI):
         if self.result is None:
             oxapi.logger.warning("Results are not available")
             return None
-        if result_format == "numpy":
+        if result_format == "np":
             return np.array([np.array(el) for el in self.result["results"]])
         elif result_format == "dict":
             return {
@@ -91,19 +88,14 @@ class Encoding(ModelAPI):
         else:
             raise ValueError(
                 "{0} is not a valid format for the output.\
-            Available formats: ['numpy', 'dict']".format(
+            Available formats: ['np', 'dict']".format(
                     result_format
                 )
             )
 
     @classmethod
     def prepare(
-        cls,
-        model: str,
-        texts: List[str],
-        api_version: str = None,
-        version: str = None,
-        mock_answer: bool = False,
+        cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
         """
         Function to create a call to OxAPI Encoding model without performing it. It will only set the parameters.
@@ -113,18 +105,18 @@ class Encoding(ModelAPI):
             texts (List[str]): the list of text passed to the Encoding model.
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
-            mock_answer (bool): optional, True to have in return a mocked answer for testing purposes
 
         Returns:
             Encoding : an object of Encoding class having the parameters set.
 
         """
+        Encoding.__check_input_model(model)
         body = {"texts": texts}
-        version = version if version is not None else "v1"
-        api_version = oxapi.api_version if api_version is None else api_version
+        version = version if version is not None else oxapi.default_model_version
+        api_version = oxapi.default_api_version if api_version is None else api_version
         api = cls(
             oxapi_type=OxapiType.NLP,
-            model=model,
+            model=OxapiNLPEncodingModel(model),
             api_version=api_version,
             version=version,
         )
@@ -138,5 +130,23 @@ class Encoding(ModelAPI):
         Returns:
 
         """
-        # TODO: remove stub
-        pass
+        return [o.value for o in OxapiNLPEncodingModel]
+
+    @staticmethod
+    def __check_input_model(model_string: str):
+        """
+        Internal function for checking if the input model name exists in OxAPI.
+        Args:
+            model_string: the input model name.
+
+        Returns:
+
+        """
+        try:
+            OxapiNLPEncodingModel(model_string)
+        except ValueError:
+            raise ModelNotFoundException(
+                "'{0}' is not a valid model for OxAPI Encoding. Available models are {1}".format(
+                    model_string, str(Encoding.list_models())
+                )
+            )

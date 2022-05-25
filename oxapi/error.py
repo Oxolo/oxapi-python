@@ -35,3 +35,7 @@ class NotFoundException(OxAPIError):
 
 class NotAllowedException(OxAPIError):
     pass
+
+
+class ModelNotFoundException(Exception):
+    pass

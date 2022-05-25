@@ -1,3 +1,5 @@
+from enum import Enum
+
 import grequests
 
 import oxapi
@@ -17,7 +19,7 @@ class ModelAPI:
     """
 
     def __init__(
-        self, model: str, oxapi_type: OxapiType, api_version: str, version: str
+        self, model: Enum, oxapi_type: OxapiType, api_version: str, version: str
     ):
         """Constructor.
 
@@ -37,6 +39,19 @@ class ModelAPI:
         self._body = None
         self.result = None
 
+    def __repr__(self) -> str:
+        return "Model: {0}, Type: {1}, API version: {2}, Version: {3}, Result: {4}, Error: {5}".format(
+            self.model.value,
+            self.type.value,
+            self.api_version,
+            self.version,
+            str(self.result),
+            str(self.error),
+        )
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
     def get_url(self, verbose: bool = False) -> str:
         """
         Function to build the full API url.
@@ -54,7 +69,7 @@ class ModelAPI:
             oxapi.logger.info(base_url)
             oxapi.logger.info(self.api_version)
             oxapi.logger.info(self.type.value)
-            oxapi.logger.info(self.model)
+            oxapi.logger.info(self.model.value)
             oxapi.logger.info(self.version)
 
         return "/".join(
@@ -64,7 +79,7 @@ class ModelAPI:
                 self.api_version,
                 "model",  # TODO: remove hardcoding
                 self.type.value,
-                self.model,
+                self.model.value,
                 self.version,
                 "inference",  # TODO: remove hardcoding
             ]

@@ -6,9 +6,7 @@ from applications written in the Python language.
 ## Documentation
 
 See the [OxAPI documentation](https://api.oxolo.com/documentation) .
-
 Access to repo doc: http://github-oxapi-python-doc.s3-website.eu-central-1.amazonaws.com
-
 ## Installation
 
 You don't need this source code unless you want to modify the package. If you just
@@ -85,7 +83,7 @@ print(completion.result)
 
 Output:
 ```python
-' Neutral\n'
+{'results': ['Neutral\n']}
 ```
 
 ### Classification
@@ -102,7 +100,7 @@ classification = Classification.create(
 
 # Fetching result
 
-res = classification.format_result(result_format="pandas")
+res = classification.format_result(result_format="pd")
 
 print(res)
 ```
@@ -224,10 +222,10 @@ Output:
 
 ### Asynchronous call pipeline
 
-With ```oxapi-python``` package is possible to make calls to OxAPI in parallel. The ```AsynchronousCallPipe``` class takes as input a list of API calls each set through the ```prepare``` function to be executed by the pipeline.
+With ```oxapi-python``` package is possible to make calls to OxAPI in parallel. The ```AsyncCallPipe``` class takes as input a list of API calls each set through the ```prepare``` function to be executed by the pipeline.
 
 ```python
-from oxapi.asynch import AsynchronousCallPipe
+from oxapi.asynch import AsyncCallPipe
 
 from oxapi.nlp.completion import Completion
 from oxapi.nlp.classification import Classification
@@ -236,19 +234,19 @@ from oxapi.nlp.pipeline import Pipeline
 
 # Set up API calls
 
-cl = Classification.prepare(model="dialog-content-filter", texts=texts=["I want to kill myself."])
+cl = Classification.prepare(model="dialog-content-filter", texts=["I want to kill myself."])
 cm = Completion.prepare(model="gpt-neo-2-7b", prompt="Hello there, ", max_length=25, do_sample=True, eos_words=["\n"])
 tr = Transformation.prepare(model="punctuation-imputation", texts=["hello my name is tim i just came back from nyc how are you doing"])
 pl = Pipeline.prepare(model="en-core-web-lg", texts=["Hi there!"])
 
 # Building and running the asynchronous pipe
 
-asy = AsynchronousCallPipe([cl, cm, tr, pl])
+asy = AsyncCallPipe([cl, cm, tr, pl])
 res = asy.run()
 
 # Fetching the result of the first call in the list
 
-print(res[0]..format_result(result_format="pandas"))
+print(res[0].format_result(result_format="pd"))
 ```
 
 Output:
@@ -260,12 +258,12 @@ Output:
 It is possible to add API calls to the asynchronous pipe even after its instantiation though the ```add``` function. There's also the ```flush``` function to clear the list in the pipe.
 
 ```python
-from oxapi.asynch import AsynchronousCallPipe
+from oxapi.asynch import AsyncCallPipe
 from oxapi.nlp.encoding import Encoding
 
 # Instantiate an empty asynchornous pipe
 
-asy = AsynchronousCallPipe()
+asy = AsyncCallPipe()
 
 # Set up API call and add it to the pipe
 
@@ -279,6 +277,5 @@ res = asy.run()
 
 
 ## Credit
-
 
 

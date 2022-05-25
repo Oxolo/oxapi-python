@@ -2,14 +2,19 @@
 """Template setup.py Read more on
 https://docs.python.org/3.7/distutils/setupscript.html."""
 
+import configparser
+
 from setuptools import setup
 
+config = configparser.ConfigParser()
+config.read("config.ini")
+
 NAME = "oxapi-python"
-VERSION = "0.0.2"
-DESCRIPTION = "The OxAPI Python library provides simplified access to the OxAPI from applications written in the Python language."
+VERSION = config["DEFAULT"]["version"]
+DESCRIPTION = ""
 AUTHOR = ""
 AUTHOR_EMAIL = ""
-PACKAGES = ["oxapi"]
+PACKAGES = ["oxapi", "oxapi.nlp", "oxapi.abstract"]
 INSTALL_REQUIRES = ["grequests>=0.6.0", "numpy>=1.17", "pandas>=1.3"]
 
 setup(

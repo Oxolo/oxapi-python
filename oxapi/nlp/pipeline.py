@@ -2,7 +2,8 @@ from typing import List, Union
 
 import oxapi
 from oxapi.abstract.api import ModelAPI
-from oxapi.utils import OxapiType
+from oxapi.error import ModelNotFoundException
+from oxapi.utils import OxapiNLPPipelineModel, OxapiType
 
 
 class Pipeline(ModelAPI):
@@ -16,7 +17,6 @@ class Pipeline(ModelAPI):
         api_version: str = None,
         version: str = None,
         verbose: bool = False,
-        mock_answer: bool = False,
         raise_exceptions: bool = True,
     ):
         """
@@ -27,21 +27,20 @@ class Pipeline(ModelAPI):
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
             verbose (bool): optional, True to enable verbose mode
-            mock_answer (bool): optional, True to have in return a mocked answer for testing purposes
-            raise_exceptions (bool): defult True, set to False to disable the raising of exceptions in case of error -
+            raise_exceptions (bool): default True, set to False to disable the raising of exceptions in case of error -
                 you will be receiving only warnings.
 
         Returns:
             Pipeline : an object of Pipeline class for fetching the result.
 
         """
-        api_version = oxapi.api_version if api_version is None else api_version
-        # TODO: hardcoding to be removed, we should implement "latest" logic
-        version = version if version is not None else "v1"
+        Pipeline.__check_input_model(model)
+        api_version = oxapi.default_api_version if api_version is None else api_version
+        version = version if version is not None else oxapi.default_model_version
         body = {"texts": texts}
         api = cls(
             oxapi_type=OxapiType.NLP,
-            model=model,
+            model=OxapiNLPPipelineModel(model),
             api_version=api_version,
             version=version,
         )
@@ -88,12 +87,7 @@ class Pipeline(ModelAPI):
 
     @classmethod
     def prepare(
-        cls,
-        model: str,
-        texts: List[str],
-        api_version: str = None,
-        version: str = None,
-        mock_answer: bool = False,
+        cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
         """
         Function to create a call to OxAPI Pipeline model without performing it. It will only set the parameters.
@@ -103,18 +97,18 @@ class Pipeline(ModelAPI):
             texts (List[str]): the list of text passed to the Pipeline model.
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
-            mock_answer (bool): optional, default False; True to have in return a mocked answer for testing purposes
 
         Returns:
             Pipeline : an object of Pipeline class having the parameters set.
 
         """
+        Pipeline.__check_input_model(model)
         body = {"texts": texts}
-        version = version if version is not None else "v1"
-        api_version = oxapi.api_version if api_version is None else api_version
+        version = version if version is not None else oxapi.default_model_version
+        api_version = oxapi.default_api_version if api_version is None else api_version
         api = cls(
             oxapi_type=OxapiType.NLP,
-            model=model,
+            model=OxapiNLPPipelineModel(model),
             api_version=api_version,
             version=version,
         )
@@ -128,5 +122,23 @@ class Pipeline(ModelAPI):
         Returns:
 
         """
-        # TODO: remove stub
-        pass
+        return [o.value for o in OxapiNLPPipelineModel]
+
+    @staticmethod
+    def __check_input_model(model_string: str):
+        """
+        Internal function for checking if the input model name exists in OxAPI.
+        Args:
+            model_string: the input model name.
+
+        Returns:
+
+        """
+        try:
+            OxapiNLPPipelineModel(model_string)
+        except ValueError:
+            raise ModelNotFoundException(
+                "'{0}' is not a valid model for OxAPI Pipeline. Available models are {1}".format(
+                    model_string, str(Pipeline.list_models())
+                )
+            )

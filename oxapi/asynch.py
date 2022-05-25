@@ -6,7 +6,7 @@ import oxapi
 from oxapi.abstract.api import ModelAPI
 
 
-class AsynchronousCallPipe:
+class AsyncCallPipe:
     """Class for performing multiple calls to OxAPI in parallel."""
 
     def __init__(self, call_list: List[ModelAPI] = None):
@@ -45,7 +45,7 @@ class AsynchronousCallPipe:
             )
 
         results = grequests.map(
-            requests=reqs, exception_handler=AsynchronousCallPipe.__exception_handler
+            requests=reqs, exception_handler=AsyncCallPipe.__exception_handler
         )
         results_processed = []
         for i in range(0, len(results)):
