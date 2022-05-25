@@ -8,6 +8,8 @@ from oxapi.error import ModelNotFoundException
 from oxapi.nlp.encoding import Encoding
 from tests.testing_utils import MockedResponse
 
+from oxapi.utils import OxapiType, OxapiNLPEncodingModel
+
 
 class TestEncoding:
     """Tests for Encoding class."""
@@ -30,7 +32,6 @@ class TestEncoding:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -43,7 +44,6 @@ class TestEncoding:
     def test_prepare(self):
         """Testing prepare function.
 
-        Returns:
         """
         oxapi.api_key = "test"
         api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
@@ -55,7 +55,6 @@ class TestEncoding:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -73,7 +72,6 @@ class TestEncoding:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -91,7 +89,6 @@ class TestEncoding:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -106,7 +103,6 @@ class TestEncoding:
     def test_list_models(self):
         """
         Testing list_model function
-        Returns:
 
         """
         models = Encoding.list_models()
@@ -116,7 +112,29 @@ class TestEncoding:
         """Testing exception raising when passed as input a non-existing model
         name.
 
-        Returns:
         """
         with pytest.raises(ModelNotFoundException):
             api = Encoding.create(model="best-encoding-model-ever", texts=["text"])
+
+    def test_none_result(self):
+        """
+        Testing format_result function when result doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
+        assert api.format_result() is None
+
+    def test_input_texts_not_defined(self):
+        """
+        Testing format_result function when input doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Encoding(
+            model=OxapiNLPEncodingModel("mpnet-base-v2"),
+            version="v1",
+            api_version="v1",
+            oxapi_type=OxapiType.NLP,
+        )
+        assert api.format_result() is None

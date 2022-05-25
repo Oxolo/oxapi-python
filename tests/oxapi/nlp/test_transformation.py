@@ -8,6 +8,8 @@ from oxapi.error import ModelNotFoundException
 from oxapi.nlp.transformation import Transformation
 from tests.testing_utils import MockedResponse
 
+from oxapi.utils import OxapiType, OxapiNLPTransformationModel
+
 
 class TestTransformation:
     """Testing Transformation class."""
@@ -27,8 +29,6 @@ class TestTransformation:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -39,8 +39,6 @@ class TestTransformation:
 
     def test_prepare(self):
         """Testing prepare function.
-
-        Returns:
         """
         oxapi.api_key = "test"
         api = Transformation.prepare(model="punctuation-imputation", texts=["test"])
@@ -51,8 +49,6 @@ class TestTransformation:
         Testing format_result function (pandas format)
         Args:
             mocked_answer: the mocked answer from grequests.
-
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -70,8 +66,6 @@ class TestTransformation:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -88,8 +82,6 @@ class TestTransformation:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -105,7 +97,6 @@ class TestTransformation:
     def test_list_models(self):
         """
         Testing list_model function
-        Returns:
 
         """
         models = Transformation.list_models()
@@ -115,9 +106,31 @@ class TestTransformation:
         """Testing exception raising when passed as input a non-existing model
         name.
 
-        Returns:
         """
         with pytest.raises(ModelNotFoundException):
             api = Transformation.create(
                 model="best-transformation-model-ever", texts=["text"]
             )
+
+    def test_none_result(self):
+        """
+        Testing format_result function when result doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Transformation.prepare(model="punctuation-imputation", texts=["test"])
+        assert api.format_result() is None
+
+    def test_input_texts_not_defined(self):
+        """
+        Testing format_result function when input doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Transformation(
+            model=OxapiNLPTransformationModel("punctuation-imputation"),
+            version="v1",
+            api_version="v1",
+            oxapi_type=OxapiType.NLP,
+        )
+        assert api.format_result() is None

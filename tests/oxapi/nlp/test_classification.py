@@ -1,5 +1,4 @@
 import unittest.mock as mock
-from typing import List
 
 import pandas as pd
 import pytest
@@ -8,6 +7,8 @@ import oxapi
 from oxapi.error import ModelNotFoundException
 from oxapi.nlp.classification import Classification
 from tests.testing_utils import MockedResponse
+
+from oxapi.utils import OxapiType, OxapiNLPClassificationModel
 
 
 class TestClassification:
@@ -30,8 +31,6 @@ class TestClassification:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
 
@@ -46,7 +45,6 @@ class TestClassification:
     def test_prepare(self):
         """Testing prepare function.
 
-        Returns:
         """
         oxapi.api_key = "test"
         api = Classification.prepare(model="dialog-tag", texts=["test"])
@@ -57,8 +55,6 @@ class TestClassification:
         Testing format_result function (pandas format)
         Args:
             mocked_answer: the mocked answer from grequests.
-
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -78,8 +74,6 @@ class TestClassification:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -98,8 +92,6 @@ class TestClassification:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -115,7 +107,6 @@ class TestClassification:
     def test_list_models(self):
         """
         Testing list_model function
-        Returns:
 
         """
         models = Classification.list_models()
@@ -125,9 +116,31 @@ class TestClassification:
         """Testing exception raising when passed as input a non-existing model
         name.
 
-        Returns:
         """
         with pytest.raises(ModelNotFoundException):
             api = Classification.create(
                 model="best-classification-model-ever", texts=["text"]
             )
+
+    def test_none_result(self):
+        """
+        Testing format_result function when result doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Classification.prepare(model="dialog-tag", texts=["test"])
+        assert api.format_result() is None
+
+    def test_input_texts_not_defined(self):
+        """
+        Testing format_result function when input doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Classification(
+            model=OxapiNLPClassificationModel("dialog-tag"),
+            version="v1",
+            api_version="v1",
+            oxapi_type=OxapiType.NLP,
+        )
+        assert api.format_result() is None

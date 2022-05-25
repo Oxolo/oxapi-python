@@ -7,6 +7,8 @@ from oxapi.error import ModelNotFoundException
 from oxapi.nlp.pipeline import Pipeline
 from tests.testing_utils import MockedResponse
 
+from oxapi.utils import OxapiType, OxapiNLPPipelineModel
+
 
 class TestPipeline:
     """Testing Pipeline class."""
@@ -28,8 +30,6 @@ class TestPipeline:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -40,8 +40,6 @@ class TestPipeline:
 
     def test_prepare(self):
         """Testing prepare function.
-
-        Returns:
         """
         oxapi.api_key = "test"
         api = Pipeline.prepare(model="en-core-web-lg", texts=["test"])
@@ -52,8 +50,6 @@ class TestPipeline:
         Testing format_result function (dict format)
         Args:
             mocked_answer: the mocked answer from grequests.
-
-        Returns:
 
         """
         oxapi.api_key = "test"
@@ -71,8 +67,6 @@ class TestPipeline:
         Args:
             mocked_answer: the mocked answer from grequests.
 
-        Returns:
-
         """
         oxapi.api_key = "test"
         with mock.patch(
@@ -86,7 +80,6 @@ class TestPipeline:
     def test_list_models(self):
         """
         Testing list_model function
-        Returns:
 
         """
         models = Pipeline.list_models()
@@ -96,7 +89,29 @@ class TestPipeline:
         """Testing exception raising when passed as input a non-existing model
         name.
 
-        Returns:
         """
         with pytest.raises(ModelNotFoundException):
             api = Pipeline.create(model="best-pipeline-ever", texts=["text"])
+
+    def test_none_result(self):
+        """
+        Testing format_result function when result doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Pipeline.prepare(model="en-core-web-lg", texts=["test"])
+        assert api.format_result() is None
+
+    def test_input_texts_not_defined(self):
+        """
+        Testing format_result function when input doesn't exist yet
+
+        """
+        oxapi.api_key = "test"
+        api = Pipeline(
+            model=OxapiNLPPipelineModel("en-core-web-lg"),
+            version="v1",
+            api_version="v1",
+            oxapi_type=OxapiType.NLP,
+        )
+        assert api.format_result() is None
