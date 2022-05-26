@@ -6,6 +6,8 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import configparser
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -14,6 +16,16 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath(".."))
+config = configparser.ConfigParser()
+
+try:
+    with open("config.ini") as f:
+        config_file_path = "config.ini"
+        # Do something with the file
+except IOError:
+    config_file_path = "../config.ini"
+
+config.read(config_file_path)
 
 
 # -- Project information -----------------------------------------------------
@@ -23,7 +35,7 @@ copyright = ""
 author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = "v0.0.4"
+release = config["DEFAULT"]["version"]
 
 # -- General configuration ---------------------------------------------------
 
