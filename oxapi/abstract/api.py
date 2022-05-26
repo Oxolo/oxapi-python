@@ -155,14 +155,13 @@ class ModelAPI:
     def parse_error_message(
         self, api_response, verbose: bool = False, raise_exceptions: bool = True
     ):
-        """
-        Method to handle the error messages from the API.
+        """Method to handle the error messages from the API.
+
         Args:
             api_response: the response received from the API.
             verbose: optional, True to enable verbose mode.
             raise_exceptions: default True, enables or disables the raising of exceptions in case of error. If False,
             you will be receiving only warnings.
-
         """
         if verbose:
             oxapi.logger.info("Response code: " + str(api_response.status_code))
