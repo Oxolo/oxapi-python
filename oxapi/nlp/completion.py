@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 
 import pandas as pd
 
@@ -22,8 +22,8 @@ class Completion(ModelAPI):
         raise_exceptions: bool = True,
         **kwargs
     ):
-        """
-        Function to create and perform a call to OxAPI Completion model
+        """Function to create and perform a call to OxAPI Completion model.
+
         Args:
             model (str): model to be invoked by the Completion API.
             prompt (str): the prompt to be passed to the Completion model.
@@ -33,9 +33,9 @@ class Completion(ModelAPI):
             raise_exceptions (bool): deafult True, set to False to disable the raising of exceptions in case of error - \
                 you will be receiving only warnings.
             **kwargs: additional parameters for the API call. See the OxAPI documentation: https://api.oxolo.com/documentation#parameters
+
         Returns:
             Completion : an object of Completion class for fetching the result.
-
         """
         Completion.__check_input_model(model)
         body = kwargs
@@ -57,8 +57,8 @@ class Completion(ModelAPI):
     def format_result(
         self, result_format: str = "str"
     ) -> Union[str, pd.DataFrame, None]:
-        """
-        Function for getting the result processed in the available formats.
+        """Function for getting the result processed in the available formats.
+
         Args:
             result_format (str): default 'str', desired format for the output. Available formats are: ['str', 'pd'].
 
@@ -97,18 +97,19 @@ class Completion(ModelAPI):
         version: str = None,
         **kwargs
     ):
-        """
-        Function to create a call to OxAPI Completion model without performing it. It will only set the parameters.
-        A Completion object instantiated by the prepare function can be used in an AsynchronousCallPipe.
+        """Function to create a call to OxAPI Completion model without
+        performing it. It will only set the parameters. A `Completion` object
+        instantiated by the prepare function can be used in an `AsyncCallPipe`.
+
         Args:
             model (str): model to be invoked by the Completion API.
             prompt (str): the prompt to be passed to the Completion model.
             api_version (str): version of the API; if nothing is passed, default value will be used.
             version (str): version of the model; if nothing is passed, default value will be used.
             **kwargs: additional parameters for the API call. See the OxAPI documentation: https://api.oxolo.com/documentation#parameters
+
         Returns:
             Completion : an object of Completion class having the parameters set.
-
         """
         Completion.__check_input_model(model)
         body = kwargs
@@ -125,23 +126,21 @@ class Completion(ModelAPI):
         return api
 
     @classmethod
-    def list_models(cls):
-        """
-        TBD: Function to list of models for Classification
-        Returns:
+    def list_models(cls) -> List[str]:
+        """Function to list of models for Classification.
 
+        Returns:
+            list : the model name list.
         """
         return [o.value for o in OxapiNLPCompletionModel]
 
     @staticmethod
     def __check_input_model(model_string: str):
-        """
-        Internal function for checking if the input model name exists in OxAPI.
+        """Internal function for checking if the input model name exists in
+        OxAPI.
+
         Args:
             model_string: the input model name.
-
-        Returns:
-
         """
         try:
             OxapiNLPCompletionModel(model_string)

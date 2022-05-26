@@ -21,8 +21,8 @@ class Transformation(ModelAPI):
         verbose: bool = False,
         raise_exceptions: bool = True,
     ):
-        """
-        Function to create and perform a call to OxAPI Transformation model
+        """Function to create and perform a call to OxAPI Transformation model.
+
         Args:
             model (str): model to be invoked by the Transformation API.
             texts (List[str]): the list of text passed to the Transformation model.
@@ -34,7 +34,6 @@ class Transformation(ModelAPI):
 
         Returns:
             Transformation : an object of Transformation class for fetching the result.
-
         """
         Transformation.__check_input_model(model)
         api_version = oxapi.default_api_version if api_version is None else api_version
@@ -55,14 +54,13 @@ class Transformation(ModelAPI):
     def format_result(
         self, result_format: str = "pd"
     ) -> Union[pd.DataFrame, dict, None]:
-        """
-        Function for getting the result processed in the available formats.
+        """Function for getting the result processed in the available formats.
+
         Args:
             result_format (str): default 'pd', desired format for the output. Available formats are: ['pd', 'dict'].
 
         Returns:
             Union[pandas.Dataframe, dict, None] : the result in the desired format; None if no result is available.
-
         """
         try:
             self.input_texts
@@ -93,9 +91,11 @@ class Transformation(ModelAPI):
     def prepare(
         cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
-        """
-        Function to create a call to OxAPI Transformation model without performing it. It will only set the parameters.
-        A Transformation object instantiated by the prepare function can be used in an AsynchronousCallPipe.
+        """Function to create a call to OxAPI Transformation model without
+        performing it. It will only set the parameters. A `Transformation`
+        object instantiated by the prepare function can be used in an
+        `AsyncCallPipe`.
+
         Args:
             model (str): model to be invoked by the Transformation API.
             texts (List[str]): the list of text passed to the Transformation model.
@@ -104,7 +104,6 @@ class Transformation(ModelAPI):
 
         Returns:
             Transformation : an object of Transformation class having the parameters set.
-
         """
         Transformation.__check_input_model(model)
         body = {"texts": texts}
@@ -120,23 +119,21 @@ class Transformation(ModelAPI):
         return api
 
     @classmethod
-    def list_models(cls):
-        """
-        TBD: Function to list of models for Classification
-        Returns:
+    def list_models(cls) -> List[str]:
+        """Function to list of models for Transformation.
 
+        Returns:
+            list : the model name list.
         """
         return [o.value for o in OxapiNLPTransformationModel]
 
     @staticmethod
     def __check_input_model(model_string: str):
-        """
-        Internal function for checking if the input model name exists in OxAPI.
+        """Internal function for checking if the input model name exists in
+        OxAPI.
+
         Args:
             model_string: the input model name.
-
-        Returns:
-
         """
         try:
             OxapiNLPTransformationModel(model_string)

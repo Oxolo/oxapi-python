@@ -13,7 +13,7 @@ class AsyncCallPipe:
         """Constructor.
 
         Args:
-            call_list: the list of API calls. It is allowed to create an AsynchronousCallPipe without its call_list
+            call_list: the list of API calls. It is allowed to create an AsyncCallPipe without its call_list
             defined at instantiation time (calls can be added later with add method).
         """
         if call_list is None:
@@ -57,13 +57,10 @@ class AsyncCallPipe:
         return results_processed
 
     def add(self, api_call: Union[ModelAPI, List[ModelAPI]]):
-        """
-        Adds a single or a list of API calls to the call list.
+        """Adds a single or a list of API calls to the call list.
+
         Args:
             api_call: single or list of API calls to be added.
-
-        Returns:
-
         """
         if isinstance(api_call, List):
             self.__call_list = self.__call_list + api_call
@@ -71,22 +68,16 @@ class AsyncCallPipe:
             self.__call_list.append(api_call)
 
     def flush(self):
-        """Clears the list of API calls.
-
-        Returns:
-        """
+        """Clears the list of API calls."""
         self.__call_list = []
 
     @staticmethod
     def __exception_handler(request, exception):
-        """
-        Handles the exceptions in calling the APIs.
+        """Handles the exceptions in calling the APIs.
+
         Args:
             request: original request
             exception: generated exception
-
-        Returns:
-
         """
         oxapi.logger.warning(
             "Request failed: {0}, ERROR: {1}".format(request.url, exception)

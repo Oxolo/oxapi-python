@@ -54,14 +54,13 @@ class Classification(ModelAPI):
     def format_result(
         self, result_format: str = "pd"
     ) -> Union[pd.DataFrame, dict, None]:
-        """
-        Function for getting the result processed in the available formats.
+        """Function for getting the result processed in the available formats.
+
         Args:
             result_format (str): default 'pd', desired format for the output. Available formats are: ['pd', 'dict'].
 
         Returns:
             Union[pandas.Dataframe, dict, None] : the result in the desired format; None if no result is available.
-
         """
         try:
             self.input_texts
@@ -114,9 +113,11 @@ class Classification(ModelAPI):
     def prepare(
         cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
-        """
-        Function to create a call to OxAPI Classification model without performing it. It will only set the parameters.
-        A Classification object instantiated by the prepare function can be used in an AsynchronousCallPipe.
+        """Function to create a call to OxAPI Classification model without
+        performing it. It will only set the parameters. A `Classification`
+        object instantiated by the prepare function can be used in an
+        ``AsyncCallPipe``.
+
         Args:
             model (str): model to be invoked by the Classification API.
             texts (List[str]): the list of text passed to the Classification model.
@@ -125,7 +126,6 @@ class Classification(ModelAPI):
 
         Returns:
             Classification : an object of Classification class having the parameters set.
-
         """
         Classification.__check_input_model(model)
         body = {"texts": texts}
@@ -142,10 +142,10 @@ class Classification(ModelAPI):
 
     @classmethod
     def list_models(cls) -> List[str]:
-        """
-        TBD: Function to list of models for Classification
-        Returns:
+        """Function to list of models for Classification.
 
+        Returns:
+            list : the model name list.
         """
         return [o.value for o in OxapiNLPClassificationModel]
 

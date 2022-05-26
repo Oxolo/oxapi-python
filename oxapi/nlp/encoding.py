@@ -21,8 +21,8 @@ class Encoding(ModelAPI):
         verbose: bool = False,
         raise_exceptions: bool = True,
     ):
-        """
-        Function to create and perform a call to OxAPI Encoding model
+        """Function to create and perform a call to OxAPI Encoding model.
+
         Args:
             model (str): model to be invoked by the Encoding API.
             texts (List[str]): the list of text passed to the Encoding model.
@@ -34,7 +34,6 @@ class Encoding(ModelAPI):
 
         Returns:
             Encoding : an object of Encoding class for fetching the result.
-
         """
         Encoding.__check_input_model(model)
         api_version = oxapi.default_api_version if api_version is None else api_version
@@ -53,14 +52,13 @@ class Encoding(ModelAPI):
         return api
 
     def format_result(self, result_format: str = "np") -> Union[np.ndarray, dict, None]:
-        """
-        Function for getting the result processed in the available formats.
+        """Function for getting the result processed in the available formats.
+
         Args:
             result_format (str): default 'np', desired format for the output. Available formats are: ['np', 'dict'].
 
         Returns:
             Union[numpy.ndarray, dict, None] : the result in the desired format; None if no result is available.
-
         """
         try:
             self.input_texts
@@ -92,9 +90,10 @@ class Encoding(ModelAPI):
     def prepare(
         cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
-        """
-        Function to create a call to OxAPI Encoding model without performing it. It will only set the parameters.
-        An Encoding object instantiated by the prepare function can be used in an AsynchronousCallPipe.
+        """Function to create a call to OxAPI Encoding model without performing
+        it. It will only set the parameters. An `Encoding` object instantiated
+        by the prepare function can be used in an `AsyncCallPipe`.
+
         Args:
             model (str): model to be invoked by the Encoding API.
             texts (List[str]): the list of text passed to the Encoding model.
@@ -103,7 +102,6 @@ class Encoding(ModelAPI):
 
         Returns:
             Encoding : an object of Encoding class having the parameters set.
-
         """
         Encoding.__check_input_model(model)
         body = {"texts": texts}
@@ -119,23 +117,21 @@ class Encoding(ModelAPI):
         return api
 
     @classmethod
-    def list_models(cls):
-        """
-        TBD: Function to list of models for Classification
-        Returns:
+    def list_models(cls) -> List[str]:
+        """Function to list of models for Encoding.
 
+        Returns:
+            list : the model name list.
         """
         return [o.value for o in OxapiNLPEncodingModel]
 
     @staticmethod
     def __check_input_model(model_string: str):
-        """
-        Internal function for checking if the input model name exists in OxAPI.
+        """Internal function for checking if the input model name exists in
+        OxAPI.
+
         Args:
             model_string: the input model name.
-
-        Returns:
-
         """
         try:
             OxapiNLPEncodingModel(model_string)

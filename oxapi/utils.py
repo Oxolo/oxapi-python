@@ -15,8 +15,8 @@ class OxapiNLPClassificationModel(Enum):
     DIALOG_TAG = "dialog-tag"
 
     def get_labels(self) -> List[str]:
-        """
-        Defines the list of class labels
+        """Defines the list of class labels.
+
         Returns:
             List[str] : the list of labels
         """
