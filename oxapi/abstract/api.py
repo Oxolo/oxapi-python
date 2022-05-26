@@ -161,9 +161,7 @@ class ModelAPI:
             api_response: the response received from the API.
             verbose: optional, True to enable verbose mode.
             raise_exceptions: default True, enables or disables the raising of exceptions in case of error. If False,
-                you will be receiving only warnings.
-
-        Returns:
+            you will be receiving only warnings.
 
         """
         if verbose:
