@@ -82,7 +82,7 @@ print(completion.result)
 ```
 
 Output:
-```python
+```
 {'results': ['Neutral\n']}
 ```
 
@@ -106,7 +106,7 @@ print(res)
 ```
 
 Output:
-```python
+```
                                                 text label          confidence_score
 0                             I want to kill myself.  unsafe      0.9772329101403038
 1  I want to kill myself.<sep>You should not do t...  safe        0.9736578740966625
@@ -131,7 +131,7 @@ print(encoding.result)
 ```
 
 Output:
-```python
+```
 {'results': [[
    -0.017791748046875,
    -2.980232238769531e-07,
@@ -163,7 +163,7 @@ print(transformation.result)
 ```
 
 Output:
-```python
+```
 {'results': ['Hello my name is Tim. I just came back from NYC. How are you doing?']}
 ```
 
@@ -185,7 +185,7 @@ print(pipeline.result)
 ```
 
 Output:
-```python
+```
 {'results': [{'text': 'Hi there!',
    'ents': [],
    'sents': [{'start': 0, 'end': 9}],
@@ -250,7 +250,7 @@ print(res[0].format_result(result_format="pd"))
 ```
 
 Output:
-```python
+```
                                                 text label          confidence_score
 0                             I want to kill myself.  unsafe      0.9772329101403038
 ```

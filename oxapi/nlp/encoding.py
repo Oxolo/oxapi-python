@@ -30,7 +30,7 @@ class Encoding(ModelAPI):
             version (str): version of the model; if nothing is passed, default value will be used.
             verbose (bool): optional, True to enable verbose mode
             raise_exceptions (bool): default True, set to False to disable the raising of exceptions in case of error -
-                you will be receiving only warnings.
+            you will be receiving only warnings.
 
         Returns:
             Encoding : an object of Encoding class for fetching the result.

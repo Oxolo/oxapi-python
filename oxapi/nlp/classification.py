@@ -21,8 +21,8 @@ class Classification(ModelAPI):
         verbose: bool = False,
         raise_exceptions: bool = True,
     ):
-        """
-        Function to create and perform a call to OxAPI Classification model
+        """Function to create and perform a call to OxAPI Classification model.
+
         Args:
             model (str): model to be invoked by the Classification API.
             texts (List[str]): the list of text passed to the Classification model.
@@ -30,11 +30,10 @@ class Classification(ModelAPI):
             version (str): version of the model; if nothing is passed, default value will be used.
             verbose (bool): optional, True to enable verbose mode
             raise_exceptions (bool): default True, set to False to disable the raising of exceptions in case of error -
-                you will be receiving only warnings.
+            you will be receiving only warnings.
 
         Returns:
             Classification : an object of Classification class for fetching the result.
-
         """
         Classification.__check_input_model(model)
         body = {"texts": texts}
