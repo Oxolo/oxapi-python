@@ -53,14 +53,13 @@ class ModelAPI:
         return self.__repr__()
 
     def get_url(self, verbose: bool = False) -> str:
-        """
-        Function to build the full API url.
+        """Function to build the full API url.
+
         Args:
             verbose (bool): optional, True to enable verbose mode.
 
         Returns:
             str : the full url of the OxAPI to be called.
-
         """
         base_url: str = (
             oxapi.base_url if oxapi.base_url is not None else "https://api.oxolo.com"
@@ -87,22 +86,22 @@ class ModelAPI:
 
     @classmethod
     def create(cls, *args, **kwargs):
-        """
-        Function to create and perform a call to any OxAPI model
+        """Function to create and perform a call to any OxAPI model.
+
         Args:
             *args: any (see the derived class signature).
             **kwargs: any (see the derived class signature).
 
         Returns:
             ModelAPI : an object of ModelAPI class for fetching the result.
-
         """
 
         def __post_request(
             api: ModelAPI, body: dict, verbose: bool, raise_exceptions: bool
         ):
-            """
-            Performs a POST request on OxAPI endpoint and returns the result.
+            """Performs a POST request on OxAPI endpoint and returns the
+            result.
+
             Args:
                 api: the ModelAPI object for performing the call.
                 body: the body of the POST request
@@ -112,7 +111,6 @@ class ModelAPI:
 
             Returns:
                 the result from the POST request.
-
             """
             if oxapi.api_key is None:
                 raise InvalidAPIKeyException(
@@ -155,16 +153,13 @@ class ModelAPI:
     def parse_error_message(
         self, api_response, verbose: bool = False, raise_exceptions: bool = True
     ):
-        """
-        Method to handle the error messages from the API.
+        """Method to handle the error messages from the API.
+
         Args:
             api_response: the response received from the API.
             verbose: optional, True to enable verbose mode.
             raise_exceptions: default True, enables or disables the raising of exceptions in case of error. If False,
-                you will be receiving only warnings.
-
-        Returns:
-
+            you will be receiving only warnings.
         """
         if verbose:
             oxapi.logger.info("Response code: " + str(api_response.status_code))
@@ -209,13 +204,10 @@ class ModelAPI:
                 raise self.error
 
     def set_params(self, **kwargs):
-        """
-        Function for setting attributes to the objects.
+        """Function for setting attributes to the objects.
+
         Args:
             **kwargs: any parameters.
-
-        Returns:
-
         """
         for key, value in kwargs.items():
             if key == "body":

@@ -19,8 +19,8 @@ class Pipeline(ModelAPI):
         verbose: bool = False,
         raise_exceptions: bool = True,
     ):
-        """
-        Function to create and perform a call to OxAPI Pipeline model
+        """Function to create and perform a call to OxAPI Pipeline model.
+
         Args:
             model (str): model to be invoked by the Pipeline API.
             texts (List[str]): the list of text passed to the Pipeline model.
@@ -28,11 +28,10 @@ class Pipeline(ModelAPI):
             version (str): version of the model; if nothing is passed, default value will be used.
             verbose (bool): optional, True to enable verbose mode
             raise_exceptions (bool): default True, set to False to disable the raising of exceptions in case of error -
-                you will be receiving only warnings.
+            you will be receiving only warnings.
 
         Returns:
             Pipeline : an object of Pipeline class for fetching the result.
-
         """
         Pipeline.__check_input_model(model)
         api_version = oxapi.default_api_version if api_version is None else api_version
@@ -51,14 +50,13 @@ class Pipeline(ModelAPI):
         return api
 
     def format_result(self, result_format: str = "dict") -> Union[dict, None]:
-        """
-        Function for getting the result processed in the available formats.
+        """Function for getting the result processed in the available formats.
+
         Args:
             result_format (str): default 'dict', desired format for the output. Available formats are: ['dict'].
 
         Returns:
             Union[dict, None] : the result in the desired format; None if no result is available.
-
         """
         try:
             self.input_texts
@@ -84,9 +82,10 @@ class Pipeline(ModelAPI):
     def prepare(
         cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
-        """
-        Function to create a call to OxAPI Pipeline model without performing it. It will only set the parameters.
-        A Pipeline object instantiated by the prepare function can be used in an AsynchronousCallPipe.
+        """Function to create a call to OxAPI Pipeline model without performing
+        it. It will only set the parameters. A `Pipeline` object instantiated
+        by the prepare function can be used in an `AsyncCallPipe`.
+
         Args:
             model (str): model to be invoked by the Pipeline API.
             texts (List[str]): the list of text passed to the Pipeline model.
@@ -95,7 +94,6 @@ class Pipeline(ModelAPI):
 
         Returns:
             Pipeline : an object of Pipeline class having the parameters set.
-
         """
         Pipeline.__check_input_model(model)
         body = {"texts": texts}
@@ -111,23 +109,21 @@ class Pipeline(ModelAPI):
         return api
 
     @classmethod
-    def list_models(cls):
-        """
-        TBD: Function to list of models for Classification
-        Returns:
+    def list_models(cls) -> List[str]:
+        """Function to list of models for Pipeline.
 
+        Returns:
+            list : the model name list.
         """
         return [o.value for o in OxapiNLPPipelineModel]
 
     @staticmethod
     def __check_input_model(model_string: str):
-        """
-        Internal function for checking if the input model name exists in OxAPI.
+        """Internal function for checking if the input model name exists in
+        OxAPI.
+
         Args:
             model_string: the input model name.
-
-        Returns:
-
         """
         try:
             OxapiNLPPipelineModel(model_string)
