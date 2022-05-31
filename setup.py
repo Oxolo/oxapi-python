@@ -2,7 +2,6 @@
 """Template setup.py Read more on
 https://docs.python.org/3.7/distutils/setupscript.html."""
 
-import configparser
 import sys
 
 from setuptools import setup
@@ -11,11 +10,8 @@ sys.path.append("./oxapi/")
 
 from config import version
 
-# config = configparser.ConfigParser()
-# config.read("oxapi/config.ini")
-
 NAME = "oxapi"
-VERSION = version  # config["DEFAULT"]["version"]
+VERSION = version
 DESCRIPTION = ""
 AUTHOR = ""
 AUTHOR_EMAIL = ""
