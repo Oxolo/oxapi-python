@@ -6,7 +6,6 @@
 
 # -- Path setup --------------------------------------------------------------
 
-import configparser
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -16,17 +15,9 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath(".."))
-config = configparser.ConfigParser()
+sys.path.append("../oxapi/")
 
-try:
-    with open("config.ini") as f:
-        config_file_path = "config.ini"
-        # Do something with the file
-except IOError:
-    config_file_path = "../config.ini"
-
-config.read(config_file_path)
-
+from config import version
 
 # -- Project information -----------------------------------------------------
 
@@ -35,7 +26,7 @@ copyright = ""
 author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = config["DEFAULT"]["version"]
+release = version
 
 # -- General configuration ---------------------------------------------------
 
