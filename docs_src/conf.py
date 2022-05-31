@@ -16,7 +16,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath(".."))
-sys.path.append('../oxapi/')
+sys.path.append("../oxapi/")
 """config = configparser.ConfigParser()
 
 try:
@@ -30,7 +30,6 @@ config.read(config_file_path)"""
 
 from config import version
 
-
 # -- Project information -----------------------------------------------------
 
 project = "OxAPI Python SDK"
@@ -38,7 +37,7 @@ copyright = ""
 author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = version #config["DEFAULT"]["version"]
+release = version  # config["DEFAULT"]["version"]
 
 # -- General configuration ---------------------------------------------------
 
