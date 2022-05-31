@@ -16,16 +16,19 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath(".."))
-config = configparser.ConfigParser()
+sys.path.append('../oxapi/')
+"""config = configparser.ConfigParser()
 
 try:
-    with open("config.ini") as f:
+    with open("oxapi/config.ini") as f:
         config_file_path = "config.ini"
         # Do something with the file
 except IOError:
-    config_file_path = "../config.ini"
+    config_file_path = "../oxapi/config.ini"
 
-config.read(config_file_path)
+config.read(config_file_path)"""
+
+from config import version
 
 
 # -- Project information -----------------------------------------------------
@@ -35,7 +38,7 @@ copyright = ""
 author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = config["DEFAULT"]["version"]
+release = version #config["DEFAULT"]["version"]
 
 # -- General configuration ---------------------------------------------------
 

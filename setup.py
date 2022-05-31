@@ -5,12 +5,17 @@ https://docs.python.org/3.7/distutils/setupscript.html."""
 import configparser
 
 from setuptools import setup
+import sys
 
-config = configparser.ConfigParser()
-config.read("config.ini")
+sys.path.append('./oxapi/')
+
+from config import version
+
+#config = configparser.ConfigParser()
+#config.read("oxapi/config.ini")
 
 NAME = "oxapi"
-VERSION = config["DEFAULT"]["version"]
+VERSION = version #config["DEFAULT"]["version"]
 DESCRIPTION = ""
 AUTHOR = ""
 AUTHOR_EMAIL = ""
