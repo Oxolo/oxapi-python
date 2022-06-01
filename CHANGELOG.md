@@ -11,6 +11,11 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - __Fixed for__ any bug fixes.
 - __Security__ in case of vulnerabilities.
 
+
+## [0.0.6] - 2022-05-31
+### Fixed for
+- Error at package import
+
 ## [0.0.5] - 2022-05-26
 ### Changed
 - This changelog
