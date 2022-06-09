@@ -12,8 +12,7 @@ from pathlib import Path
 
 from config import version
 
-this_directory = Path(__file__)
-long_description = (this_directory / "README.md").read_text()
+long_description = Path("README.md").read_text()
 
 NAME = "oxapi"
 VERSION = version
@@ -25,8 +24,8 @@ INSTALL_REQUIRES = [
     "grequests>=0.6.0",
     "numpy>=1.17",
     "pandas>=1.3",
-    "requests==2.20",
-    "urllib3==1.24.3",
+    "requests>=2.27",
+    "urllib3>=1.26.5",
     "jinja2==2.11.3",
 ]
 
