@@ -229,7 +229,6 @@ upload_badge_artifacts:
     GIT_STRATEGY: none
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
-    - ls -al
     - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
     - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
