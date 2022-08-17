@@ -85,11 +85,11 @@ pytest:
   script:
     - pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
     - coverage run -m pytest
-    - coverage-badge -o coverage.svg
+    - coverage-badge -o tests/coverage.svg
   artifacts:
     when: always
     paths:
-      - "tests/coverage"
+      - ./tests/"
     reports:
       junit: tests/report.xml
   coverage: '/^TOTAL.+?(\d+\%)$/'
