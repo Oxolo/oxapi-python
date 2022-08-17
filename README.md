@@ -2,7 +2,7 @@
 <a><img width="300" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
 </p>
 
-This Python library provides simplified access to the OxAPI from applications written in the Python language.
+This Python library provides simplified access to the OxAPI from applications written in Python.
 
 ```python
 import oxapi
@@ -57,9 +57,8 @@ This package is intended for anyone working with natural language processing.
 - You need a reliable and scalable API to build your application on
 - You need the latest models at your fingertips
 - You don't need thousands of models, only a few really good ones
-- You need results blazingly fast
-- You don't want to bother creating and maintaining GPU instances
-- You don't care about the backend technology
+- You need results blazingly fast 🚀
+- You don't want to bother creating and maintaining GPU clusters
 - You want someone else to take care of all the dirtywork
 - You have one or more of the following usecases:
     - Natural Language Understanding
@@ -77,10 +76,18 @@ This package is intended for anyone working with natural language processing.
         - Summarization
         - Product Description
         - Ad-Generation
-        - And many more!
+        - And many more ... 🚀
 
 The list of use-cases will be expanded upon in the future. We will expand our offer with models from
 computer vision and audio eventually in the coming weeks and months. Stay tuned!
+
+## Reliability
+
+We see reliability and speed as our core assets. Visit our [statuspage](https://status.oxapi.ai) on recent updates and healthchecks.
+
+## FAQ
+
+If you have any questions, please check the [FAQ](https://oxapi.ai/pricing) section of our hompage.
 
 ## Usage
 
