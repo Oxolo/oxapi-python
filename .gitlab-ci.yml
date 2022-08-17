@@ -84,7 +84,7 @@ pytest:
     - pip install anybadge
   script:
     - pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests | tee tests/coverage.txt
-    - COVERAGE=$(grep -P "TOTAL.*\s+(\d+\%)" tests/cov.txt | sed 's/.* //' | sed 's/%//')
+    - COVERAGE=$(grep -P "TOTAL.*\s+(\d+\%)" tests/coverage.txt | sed 's/.* //' | sed 's/%//')
     - anybadge --label=coverage --file=tests/coverage.svg --value=$COVERAGE 20=red 40=orange 70=yellow 90=green
   artifacts:
     when: always
