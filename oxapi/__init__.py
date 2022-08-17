@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 base_url = None
 api_key = None
