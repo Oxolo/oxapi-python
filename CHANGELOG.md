@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2022-08-17
 ### Added
 - Major first release
-- `GEVENT_SUPPORT=True` in `__init__`
 ### Changed
 - Updated README.md
 - `.create` renamed `.run`
@@ -13,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Fixed imports in `__init__` to surpress warnings
 - Moved `version` from `config.py` to `__init__`
 - Moved `log_level` from `config.py` to `__init__`
+- Moved from `grequests` to `requests` for sync calls to avoid gevent warnings
 ### Removed
 - `Bearer` prefix for Token authorization
 

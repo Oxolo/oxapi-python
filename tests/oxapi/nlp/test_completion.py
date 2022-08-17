@@ -30,7 +30,7 @@ class TestCompletion:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
+            "oxapi.abstract.api.requests.post", return_value=mocked_answer
         ):
             api = Completion.create(
                 model="gpt-neo-2-7b",
@@ -55,7 +55,7 @@ class TestCompletion:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
+            "oxapi.abstract.api.requests.post", return_value=mocked_answer
         ):
             api = Completion.create(
                 model="gpt-neo-2-7b",
@@ -74,7 +74,7 @@ class TestCompletion:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
+            "oxapi.abstract.api.requests.post", return_value=mocked_answer
         ):
             api = Completion.create(
                 model="gpt-neo-2-7b",
@@ -93,7 +93,7 @@ class TestCompletion:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
+            "oxapi.abstract.api.requests.post", return_value=mocked_answer
         ):
             api = Completion.create(
                 model="gpt-neo-2-7b",
@@ -142,7 +142,7 @@ class TestCompletion:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
+            "oxapi.abstract.api.requests.post", return_value=mocked_answer
         ):
             api = Completion.create(
                 model="gpt-neo-2-7b",

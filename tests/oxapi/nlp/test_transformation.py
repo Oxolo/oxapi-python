@@ -29,9 +29,7 @@ class TestTransformation:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Transformation.create(model="punctuation-imputation", texts=["test"])
             assert api.result is not None
 
@@ -49,9 +47,7 @@ class TestTransformation:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Transformation.create(model="punctuation-imputation", texts=["test"])
 
         res = api.format_result()
@@ -65,9 +61,7 @@ class TestTransformation:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Transformation.create(model="punctuation-imputation", texts=["test"])
 
         res = api.format_result("dict")
@@ -81,9 +75,7 @@ class TestTransformation:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Transformation.create(
                 model="punctuation-imputation", texts=["esposito"]
             )

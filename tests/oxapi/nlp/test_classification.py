@@ -57,9 +57,7 @@ class TestClassification:
         """
         oxapi.api_key = "test"
 
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Classification.create(
                 model="dialog-content-filter", texts=["esposito"]
             )
@@ -79,9 +77,7 @@ class TestClassification:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Classification.create(
                 model="dialog-content-filter", texts=["esposito"]
             )
@@ -96,9 +92,7 @@ class TestClassification:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Classification.create(
                 model="dialog-content-filter", texts=["esposito"]
             )
@@ -113,9 +107,7 @@ class TestClassification:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Classification.create(
                 model="dialog-content-filter", texts=["esposito"]
             )
@@ -164,8 +156,8 @@ class TestClassification:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[mocked_answer_dialog_topic],
+            "oxapi.abstract.api.requests.post",
+            return_value=mocked_answer_dialog_topic,
         ):
             api = Classification.create(model="dialog-topics", texts=["esposito"])
 
@@ -182,8 +174,8 @@ class TestClassification:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[mocked_answer_dialog_emotions],
+            "oxapi.abstract.api.requests.post",
+            return_value=mocked_answer_dialog_emotions,
         ):
             api = Classification.create(model="dialog-emotions", texts=["esposito"])
 

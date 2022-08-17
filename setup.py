@@ -14,9 +14,9 @@ long_description = Path("README.md").read_text()
 
 NAME = "oxapi"
 VERSION = "1.0.0"
-DESCRIPTION = ""
-AUTHOR = ""
-AUTHOR_EMAIL = ""
+DESCRIPTION = "The Python library for querying the OxAPI"
+AUTHOR = "Oxolo GmbH"
+AUTHOR_EMAIL = "support@oxapi.ai"
 PACKAGES = ["oxapi", "oxapi.nlp", "oxapi.abstract"]
 INSTALL_REQUIRES = [
     "grequests>=0.6.0",
@@ -25,7 +25,8 @@ INSTALL_REQUIRES = [
     "requests>=2.27",
     "urllib3>=1.26.5",
     "jinja2==2.11.3",
-    "loguru==0.6.0",
+    "hypothesis>=6.54.3",
+    "jedi>=0.10",
 ]
 
 setup(

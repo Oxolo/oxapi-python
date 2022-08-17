@@ -32,9 +32,7 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
             assert api.result is not None
 
@@ -51,9 +49,7 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result()
@@ -66,9 +62,7 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result("dict")
@@ -81,9 +75,7 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
             api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:

@@ -1,6 +1,6 @@
 from enum import Enum
 
-import grequests
+import requests
 
 import oxapi
 from oxapi.error import (
@@ -120,24 +120,20 @@ class ModelAPI:
             if verbose:
                 oxapi.logger.info(url)
                 oxapi.logger.info(body)
-            res = grequests.map(
-                [
-                    grequests.post(
-                        url,
-                        json=body,
-                        headers={
-                            "Content-Type": "application/json",
-                            "Authorization": oxapi.api_key,
-                        },
-                    )
-                ]
+            res = requests.post(
+                url,
+                json=body,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": oxapi.api_key,
+                },
             )
             api.parse_error_message(
-                res[0], verbose=verbose, raise_exceptions=raise_exceptions
+                res, verbose=verbose, raise_exceptions=raise_exceptions
             )
             if api.error is not None:
                 return None
-            return res[0]
+            return res
 
         api: ModelAPI = kwargs.get("api")
         verbose: bool = kwargs.get("verbose")

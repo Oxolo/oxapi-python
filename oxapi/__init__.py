@@ -1,18 +1,13 @@
 import os
-import sys
-from loguru import logger
+import logging
 
 base_url = None
 api_key = None
 
 __version__ = "1.0.0"
-
-logger.add(
-    sys.stderr,
-    format="{time} {level} {message}",
-    filter="oxapi",
-    level=os.getenv("LOG_LEVEL", "INFO"),
-)
+log_level = os.getenv("LOG_LEVEL", "INFO")
+logger = logging.getLogger(name="OxAPI Logger")
+logger.setLevel(level=log_level)
 
 try:
     api_key = os.environ["OXAPI_KEY"]
