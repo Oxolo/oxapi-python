@@ -7,9 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated README.md
 - `.create` renamed `.run`
-- `.run(**kwargs)` is callable via `.(**kwargs)`
 - Updated endpoint names
 - Updated endpoint routes
+### Removed
+- `Bearer` prefix for Token authorization
 
 ## [0.0.7] - 2022-06-06
 ### Fixed for

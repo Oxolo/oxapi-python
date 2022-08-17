@@ -32,14 +32,13 @@ class AsyncCallPipe:
         reqs = []
         for call in self.__call_list:
             api_type: ModelAPI = call
-            token: str = "Bearer " + oxapi.api_key
             reqs.append(
                 grequests.post(
                     api_type.get_url(),
                     json=api_type._body,
                     headers={
                         "Content-Type": "application/json",
-                        "Authorization": token,
+                        "Authorization": oxapi.api_key,
                     },
                 )
             )

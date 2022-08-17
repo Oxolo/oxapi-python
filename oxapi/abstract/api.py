@@ -120,7 +120,6 @@ class ModelAPI:
             if verbose:
                 oxapi.logger.info(url)
                 oxapi.logger.info(body)
-            token: str = "Bearer " + oxapi.api_key
             res = grequests.map(
                 [
                     grequests.post(
@@ -128,7 +127,7 @@ class ModelAPI:
                         json=body,
                         headers={
                             "Content-Type": "application/json",
-                            "Authorization": token,
+                            "Authorization": oxapi.api_key,
                         },
                     )
                 ]
