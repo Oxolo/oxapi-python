@@ -81,11 +81,11 @@ pytest:
   stage: test
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   before_script:
-    - pip install coverage-badge
+    - pip install anybadge
   script:
-    - sleep 1000
-    - coverage run -m pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
-    - coverage-badge -o tests/coverage.svg
+    - pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests | tee tests/coverage.txt
+    - COVERAGE=$(grep -P "TOTAL.*\s+(\d+\%)" tests/cov.txt | sed 's/.* //' | sed 's/%//')
+    - anybadge --label=coverage --file=tests/coverage.svg --value=$COVERAGE 20=red 40=orange 70=yellow 90=green
   artifacts:
     when: always
     paths:
