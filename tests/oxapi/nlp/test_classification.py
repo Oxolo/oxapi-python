@@ -27,7 +27,7 @@ class TestClassification:
     @pytest.fixture
     def mocked_answer_dialog_topic(self):
         """Creates mocked response for testing purposes, specifically for
-        dialog-topic model.
+        dialog-topics model.
 
         Returns:
             list : mocked answers
@@ -50,19 +50,15 @@ class TestClassification:
         )
 
     def test_create(self, mocked_answer):
-        """Testing create function.
+        """Testing run function.
 
         Args:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
 
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Classification.run(model="dialog-content-filter", texts=["esposito"])
             assert api.result is not None
 
     def test_prepare(self):
@@ -79,12 +75,8 @@ class TestClassification:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Classification.run(model="dialog-content-filter", texts=["esposito"])
 
         res = api.format_result()
         assert isinstance(res, pd.DataFrame)
@@ -96,12 +88,8 @@ class TestClassification:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Classification.run(model="dialog-content-filter", texts=["esposito"])
 
         res = api.format_result("dict")
         assert isinstance(res, dict)
@@ -113,12 +101,8 @@ class TestClassification:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Classification.create(
-                model="dialog-content-filter", texts=["esposito"]
-            )
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Classification.run(model="dialog-content-filter", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:
             res = api.format_result("dino")
@@ -132,7 +116,7 @@ class TestClassification:
         """Testing exception raising when passed as input a non-existing model
         name."""
         with pytest.raises(ModelNotFoundException):
-            api = Classification.create(
+            api = Classification.run(
                 model="best-classification-model-ever", texts=["text"]
             )
 
@@ -155,7 +139,7 @@ class TestClassification:
 
     def test_dialog_topic_model(self, mocked_answer_dialog_topic):
         """
-        Testing dialog-topic specific result.
+        Testing dialog-topics specific result.
         Args:
             mocked_answer_dialog_topic:
 
@@ -164,16 +148,16 @@ class TestClassification:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[mocked_answer_dialog_topic],
+            "oxapi.abstract.api.requests.post",
+            return_value=mocked_answer_dialog_topic,
         ):
-            api = Classification.create(model="dialog-topic", texts=["esposito"])
+            api = Classification.run(model="dialog-topics", texts=["esposito"])
 
         assert isinstance(api.format_result("dict"), dict)
 
     def test_dialog_emotions_model(self, mocked_answer_dialog_emotions):
         """
-        Testing dialog-topic specific result.
+        Testing dialog-topics specific result.
         Args:
             mocked_answer_dialog_emotions:
 
@@ -182,9 +166,9 @@ class TestClassification:
         """
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[mocked_answer_dialog_emotions],
+            "oxapi.abstract.api.requests.post",
+            return_value=mocked_answer_dialog_emotions,
         ):
-            api = Classification.create(model="dialog-emotions", texts=["esposito"])
+            api = Classification.run(model="dialog-emotions", texts=["esposito"])
 
         assert isinstance(api.format_result(), pd.DataFrame)

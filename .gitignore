@@ -111,3 +111,7 @@ venv.bak/
 .mypy_cache/
 
 data
+
+.pytest_cache/
+
+*.code-workspace

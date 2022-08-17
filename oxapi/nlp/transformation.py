@@ -12,7 +12,7 @@ class Transformation(ModelAPI):
     """Class for creating OxAPI calls to Transformation models."""
 
     @classmethod
-    def create(
+    def run(
         cls,
         model: str,
         texts: List[str],
@@ -21,7 +21,7 @@ class Transformation(ModelAPI):
         verbose: bool = False,
         raise_exceptions: bool = True,
     ):
-        """Function to create and perform a call to OxAPI Transformation model.
+        """Function to run and perform a call to OxAPI Transformation model.
 
         Args:
             model (str): model to be invoked by the Transformation API.
@@ -45,7 +45,7 @@ class Transformation(ModelAPI):
             api_version=api_version,
             version=version,
         )
-        api, res = super().create(
+        api, res = super().run(
             api=api, verbose=verbose, body=body, raise_exceptions=raise_exceptions
         )
         api.set_params(result=res.json() if res is not None else res, input_texts=texts)
@@ -91,7 +91,7 @@ class Transformation(ModelAPI):
     def prepare(
         cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
-        """Function to create a call to OxAPI Transformation model without
+        """Function to run a call to OxAPI Transformation model without
         performing it. It will only set the parameters. A `Transformation`
         object instantiated by the prepare function can be used in an
         `AsyncCallPipe`.

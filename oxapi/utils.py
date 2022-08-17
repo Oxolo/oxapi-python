@@ -10,7 +10,7 @@ class OxapiNLPClassificationModel(Enum):
     """Enum for OxAPI NLP classification models."""
 
     DIALOG_CONTENT_FILTER = "dialog-content-filter"
-    DIALOG_TOPIC = "dialog-topic"
+    DIALOG_TOPICS = "dialog-topics"
     DIALOG_EMOTIONS = "dialog-emotions"
     DIALOG_TAG = "dialog-tag"
 
@@ -29,7 +29,7 @@ class OxapiNLPClassificationModel(Enum):
                 "group_label",
                 "confidence_score",
             ]
-        elif self.value == self.DIALOG_TOPIC.value:
+        elif self.value == self.DIALOG_TOPICS.value:
             return ["label"]
 
 
@@ -43,8 +43,8 @@ class OxapiNLPCompletionModel(Enum):
 class OxapiNLPEncodingModel(Enum):
     """Enum for OxAPI NLP encoding models."""
 
-    MPNET_BASE_V2 = "mpnet-base-v2"
-    MINILM_L6_V2 = "minilm-l6-v2"
+    ALL_MPNET_BASE_V2 = "all-mpnet-base-v2"
+    ALL_MINILM_L6_V2 = "all-minilm-l6-v2"
 
 
 class OxapiNLPPipelineModel(Enum):

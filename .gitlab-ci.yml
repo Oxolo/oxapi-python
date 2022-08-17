@@ -79,7 +79,7 @@ docformatter:
 pytest:
   stage: test
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-  script: pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
+  script: pytest -v --cov-fail-under=95 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
   artifacts:
     when: always
     paths:
