@@ -9,7 +9,7 @@ import oxapi
 oxapi.api_key = "sk-..."
 
 from oxapi.nlp.encoding import Encoding
-encoding = Encoding.create(
+encoding = Encoding.run(
     model="mpnet-base-v2",
     texts=["Hello", "How are you?"]
 )
@@ -113,7 +113,7 @@ from oxapi.nlp.completion import Completion
 
 # Performing API call
 
-completion = Completion.create(
+completion = Completion.run(
     model="gpt-neo-2-7b", 
     prompt="My name is Tim.\nSentiment: Neutral\nIt is such a lovely day.\nSentiment: Positive\nAlthough I am in a bad mood\nSentiment:",
     max_length=2, 
@@ -140,7 +140,7 @@ from oxapi.nlp.classification import Classification
 
 # Performing API call
 
-classification = Classification.create(
+classification = Classification.run(
     model="dialog-content-filter", 
     texts=["I want to kill myself.", "I want to kill myself.<sep>You should not do that!", "I want to kill myself.<sep>Do it!"]
 )
@@ -167,7 +167,7 @@ from oxapi.nlp.encoding import Encoding
 
 # Performing API call
 
-encoding = Encoding.create(
+encoding = Encoding.run(
     model="mpnet-base-v2",
     texts=["Hello", "How are you?"]
 )
@@ -199,7 +199,7 @@ from oxapi.nlp.transformation import Transformation
 
 # Performing API call
 
-transformation = Transformation.create(
+transformation = Transformation.run(
     model="punctuation-imputation", 
     texts=["hello my name is tim i just came back from nyc how are you doing"]
 )
@@ -221,7 +221,7 @@ from oxapi.nlp.pipeline import Pipeline
 
 # Performing API call
 
-pipeline = Pipeline.create(
+pipeline = Pipeline.run(
     model="en-core-web-lg",
     texts=["Hi there!"]
 )
@@ -340,11 +340,6 @@ res = asy.run()
 ├── tests                       # Tests
 └── docs_src                    # Documentation source files
 ```
-
-## Changelog
-
-- v1.0.0
-    - Initial Release
 
 ## Credits
 
