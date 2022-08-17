@@ -235,4 +235,3 @@ upload_badge_artifacts:
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
     - aws s3 cp ./pylint/pylint.svg s3://github-public-storage/oxapi-python-pylint.svg
     - aws s3 cp ./tests/coverage.svg s3://github-public-storage/oxapi-python-coverage.svg
-
