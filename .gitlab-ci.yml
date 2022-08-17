@@ -18,6 +18,7 @@ stages:
   - test
   - push
   - documentation
+  - upload
 
 build-development-image:
   stage: build
@@ -79,11 +80,16 @@ docformatter:
 pytest:
   stage: test
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-  script: pytest -v --cov-fail-under=95 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
+  before_script:
+    - pip install anybadge
+  script:
+    - pytest -v --cov-fail-under=95 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests | tee tests/coverage.txt
+    - COVERAGE=$(grep -P "TOTAL.*\s+(\d+\%)" tests/coverage.txt | sed 's/.* //' | sed 's/%//')
+    - anybadge --label=coverage --file=tests/coverage.svg --value=$COVERAGE 20=red 40=orange 70=yellow 90=green
   artifacts:
     when: always
     paths:
-      - "tests/coverage"
+      - ./tests/
     reports:
       junit: tests/report.xml
   coverage: '/^TOTAL.+?(\d+\%)$/'
@@ -210,3 +216,24 @@ upload-to-s3:
     - aws configure set region us-east-1
     - aws s3 sync public/ s3://github-oxapi-python-doc/
 
+
+upload_badge_artifacts:
+  stage: upload
+  only:
+    - main
+  needs:
+    - pytest
+    - pylint
+  variables:
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: 'eu-central-1'
+    GIT_STRATEGY: none
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws s3 cp ./pylint/pylint.svg s3://github-public-storage/oxapi-python-pylint.svg
+    - aws s3 cp ./tests/coverage.svg s3://github-public-storage/oxapi-python-coverage.svg
