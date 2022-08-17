@@ -10,12 +10,10 @@ sys.path.append("./oxapi/")
 
 from pathlib import Path
 
-from oxapi import __version__ as version
-
 long_description = Path("README.md").read_text()
 
 NAME = "oxapi"
-VERSION = version
+VERSION = "1.0.0"
 DESCRIPTION = ""
 AUTHOR = ""
 AUTHOR_EMAIL = ""
