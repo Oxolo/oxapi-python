@@ -4,7 +4,7 @@ import os
 base_url = None
 api_key = None
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 log_level = os.getenv("LOG_LEVEL", "INFO")
 logger = logging.getLogger(name="OxAPI")
 logger.setLevel(level=log_level)

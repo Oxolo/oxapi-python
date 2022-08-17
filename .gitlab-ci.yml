@@ -149,7 +149,7 @@ Push latest:
 
 build-package:
   only:
-    - main
+    - tags
   stage: push
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   variables:

@@ -13,7 +13,7 @@ from pathlib import Path
 long_description = Path("README.md").read_text()
 
 NAME = "oxapi"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 DESCRIPTION = "The Python library for querying the OxAPI"
 AUTHOR = "Oxolo GmbH"
 AUTHOR_EMAIL = "support@oxapi.ai"
