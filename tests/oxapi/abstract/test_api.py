@@ -48,14 +48,14 @@ class TestModelAPI:
         """Test error at abstract class instantiation."""
         with pytest.raises(NotImplementedError):
             api = ModelAPI(
-                OxapiNLPClassificationModel("dialog-topic"), OxapiType.NLP, "w", "v"
+                OxapiNLPClassificationModel("dialog-topics"), OxapiType.NLP, "w", "v"
             )
 
     def test_api_key(self):
         """Testing error raising with not defined API Key."""
         oxapi.api_key = None
         with pytest.raises(InvalidAPIKeyException) as ve:
-            Classification.create(model="dialog-topic", texts=["esposito"])
+            Classification.create(model="dialog-topics", texts=["esposito"])
 
     def test_set_params(self):
         api = Classification.prepare("dialog-tag", ["mammamiaitaliano"])

@@ -16,7 +16,7 @@ import oxapi
 oxapi.api_key = "sk-..."
 
 encoding = oxapi.Encoding.run(
-    model="mpnet-base-v2",
+    model="all-mpnet-base-v2",
     texts=["Hello", "How are you?"]
 )
 ```
@@ -174,7 +174,7 @@ from oxapi import Encoding
 # Performing API call
 
 encoding = Encoding.run(
-    model="mpnet-base-v2",
+    model="all-mpnet-base-v2",
     texts=["Hello", "How are you?"]
 )
 
@@ -320,7 +320,7 @@ asy = AsyncCallPipe()
 
 # Set up API call and add it to the pipe
 
-en = Encoding.prepare(model="mpnet-base-v2", texts=["Hello", "How are you?"])
+en = Encoding.prepare(model="all-mpnet-base-v2", texts=["Hello", "How are you?"])
 asy.add(en)
 
 # running the asynchronous pipe

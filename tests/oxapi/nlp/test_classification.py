@@ -27,7 +27,7 @@ class TestClassification:
     @pytest.fixture
     def mocked_answer_dialog_topic(self):
         """Creates mocked response for testing purposes, specifically for
-        dialog-topic model.
+        dialog-topics model.
 
         Returns:
             list : mocked answers
@@ -155,7 +155,7 @@ class TestClassification:
 
     def test_dialog_topic_model(self, mocked_answer_dialog_topic):
         """
-        Testing dialog-topic specific result.
+        Testing dialog-topics specific result.
         Args:
             mocked_answer_dialog_topic:
 
@@ -167,13 +167,13 @@ class TestClassification:
             "oxapi.abstract.api.grequests.map",
             return_value=[mocked_answer_dialog_topic],
         ):
-            api = Classification.create(model="dialog-topic", texts=["esposito"])
+            api = Classification.create(model="dialog-topics", texts=["esposito"])
 
         assert isinstance(api.format_result("dict"), dict)
 
     def test_dialog_emotions_model(self, mocked_answer_dialog_emotions):
         """
-        Testing dialog-topic specific result.
+        Testing dialog-topics specific result.
         Args:
             mocked_answer_dialog_emotions:
 

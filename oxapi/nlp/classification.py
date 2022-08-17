@@ -72,7 +72,7 @@ class Classification(ModelAPI):
             return None
 
         labels = self.model.get_labels()
-        if self.model == OxapiNLPClassificationModel.DIALOG_TOPIC:
+        if self.model == OxapiNLPClassificationModel.DIALOG_TOPICS:
             input_texts = ["\n".join(self.input_texts)]
         else:
             input_texts = self.input_texts
@@ -83,7 +83,7 @@ class Classification(ModelAPI):
             return pd.concat([tmp_in, tmp_out], axis=1)
         elif result_format == "dict":
 
-            if self.model == OxapiNLPClassificationModel.DIALOG_TOPIC:
+            if self.model == OxapiNLPClassificationModel.DIALOG_TOPICS:
                 tmp_out = {
                     i: {
                         "text": input_texts[0],
