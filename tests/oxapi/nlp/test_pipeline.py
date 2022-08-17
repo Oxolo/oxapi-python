@@ -24,16 +24,14 @@ class TestPipeline:
         )
 
     def test_create(self, mocked_answer):
-        """Testing create function.
+        """Testing run function.
 
         Args:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Pipeline.create(model="en-core-web-lg", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Pipeline.run(model="en-core-web-lg", texts=["esposito"])
             assert api.result is not None
 
     def test_prepare(self):
@@ -50,10 +48,8 @@ class TestPipeline:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Pipeline.create(model="en-core-web-lg", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Pipeline.run(model="en-core-web-lg", texts=["esposito"])
 
         res = api.format_result()
         assert isinstance(res, dict)
@@ -66,10 +62,8 @@ class TestPipeline:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Pipeline.create(model="en-core-web-lg", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Pipeline.run(model="en-core-web-lg", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:
             res = api.format_result("dino")
@@ -83,7 +77,7 @@ class TestPipeline:
         """Testing exception raising when passed as input a non-existing model
         name."""
         with pytest.raises(ModelNotFoundException):
-            api = Pipeline.create(model="best-pipeline-ever", texts=["text"])
+            api = Pipeline.run(model="best-pipeline-ever", texts=["text"])
 
     def test_none_result(self):
         """Testing format_result function when result doesn't exist yet."""

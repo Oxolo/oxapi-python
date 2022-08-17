@@ -23,16 +23,14 @@ class TestTransformation:
         return MockedResponse(status_code=200, message={"results": [["Test!"]]})
 
     def test_create(self, mocked_answer):
-        """Testing create function.
+        """Testing run function.
 
         Args:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Transformation.create(model="punctuation-imputation", texts=["test"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Transformation.run(model="punctuation-imputation", texts=["test"])
             assert api.result is not None
 
     def test_prepare(self):
@@ -49,10 +47,8 @@ class TestTransformation:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Transformation.create(model="punctuation-imputation", texts=["test"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Transformation.run(model="punctuation-imputation", texts=["test"])
 
         res = api.format_result()
         assert isinstance(res, pd.DataFrame)
@@ -65,10 +61,8 @@ class TestTransformation:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Transformation.create(model="punctuation-imputation", texts=["test"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Transformation.run(model="punctuation-imputation", texts=["test"])
 
         res = api.format_result("dict")
         assert isinstance(res, dict)
@@ -81,12 +75,8 @@ class TestTransformation:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Transformation.create(
-                model="punctuation-imputation", texts=["esposito"]
-            )
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Transformation.run(model="punctuation-imputation", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:
             res = api.format_result("dino")
@@ -100,7 +90,7 @@ class TestTransformation:
         """Testing exception raising when passed as input a non-existing model
         name."""
         with pytest.raises(ModelNotFoundException):
-            api = Transformation.create(
+            api = Transformation.run(
                 model="best-transformation-model-ever", texts=["text"]
             )
 

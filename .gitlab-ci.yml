@@ -83,7 +83,7 @@ pytest:
   before_script:
     - pip install anybadge
   script:
-    - pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests | tee tests/coverage.txt
+    - pytest -v --cov-fail-under=95 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests | tee tests/coverage.txt
     - COVERAGE=$(grep -P "TOTAL.*\s+(\d+\%)" tests/coverage.txt | sed 's/.* //' | sed 's/%//')
     - anybadge --label=coverage --file=tests/coverage.svg --value=$COVERAGE 20=red 40=orange 70=yellow 90=green
   artifacts:
@@ -155,7 +155,7 @@ Push latest:
 
 build-package:
   only:
-    - main
+    - tags
   stage: push
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   variables:
@@ -219,6 +219,8 @@ upload-to-s3:
 
 upload_badge_artifacts:
   stage: upload
+  only:
+    - main
   needs:
     - pytest
     - pylint

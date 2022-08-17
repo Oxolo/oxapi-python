@@ -26,22 +26,20 @@ class TestEncoding:
         )
 
     def test_create(self, mocked_answer):
-        """Testing create function.
+        """Testing run function.
 
         Args:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
             assert api.result is not None
 
     def test_prepare(self):
         """Testing prepare function."""
         oxapi.api_key = "test"
-        api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
+        api = Encoding.prepare(model="all-mpnet-base-v2", texts=["test"])
         assert isinstance(api, Encoding) and api.result is None
 
     def test_format_result_numpy(self, mocked_answer):
@@ -51,10 +49,8 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result()
         assert isinstance(res, np.ndarray)
@@ -66,10 +62,8 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result("dict")
         assert isinstance(res, dict)
@@ -81,10 +75,8 @@ class TestEncoding:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Encoding.create(model="mpnet-base-v2", texts=["esposito"])
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:
             res = api.format_result("dino")
@@ -98,19 +90,19 @@ class TestEncoding:
         """Testing exception raising when passed as input a non-existing model
         name."""
         with pytest.raises(ModelNotFoundException):
-            api = Encoding.create(model="best-encoding-model-ever", texts=["text"])
+            api = Encoding.run(model="best-encoding-model-ever", texts=["text"])
 
     def test_none_result(self):
         """Testing format_result function when result doesn't exist yet."""
         oxapi.api_key = "test"
-        api = Encoding.prepare(model="mpnet-base-v2", texts=["test"])
+        api = Encoding.prepare(model="all-mpnet-base-v2", texts=["test"])
         assert api.format_result() is None
 
     def test_input_texts_not_defined(self):
         """Testing format_result function when input doesn't exist yet."""
         oxapi.api_key = "test"
         api = Encoding(
-            model=OxapiNLPEncodingModel("mpnet-base-v2"),
+            model=OxapiNLPEncodingModel("all-mpnet-base-v2"),
             version="v1",
             api_version="v1",
             oxapi_type=OxapiType.NLP,

@@ -10,15 +10,13 @@ sys.path.append("./oxapi/")
 
 from pathlib import Path
 
-from config import version
-
 long_description = Path("README.md").read_text()
 
 NAME = "oxapi"
-VERSION = version
-DESCRIPTION = ""
-AUTHOR = ""
-AUTHOR_EMAIL = ""
+VERSION = "1.1.0"
+DESCRIPTION = "The Python library for querying the OxAPI"
+AUTHOR = "Oxolo GmbH"
+AUTHOR_EMAIL = "support@oxapi.ai"
 PACKAGES = ["oxapi", "oxapi.nlp", "oxapi.abstract"]
 INSTALL_REQUIRES = [
     "grequests>=0.6.0",
@@ -27,6 +25,8 @@ INSTALL_REQUIRES = [
     "requests>=2.27",
     "urllib3>=1.26.5",
     "jinja2==2.11.3",
+    "hypothesis>=6.54.3",
+    "jedi>=0.10",
 ]
 
 setup(

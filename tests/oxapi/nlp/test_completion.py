@@ -23,16 +23,14 @@ class TestCompletion:
         )
 
     def test_create(self, mocked_answer):
-        """Testing create function.
+        """Testing run function.
 
         Args:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Completion.create(
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Completion.run(
                 model="gpt-neo-2-7b",
                 prompt="I am a good programmer, therefore ",
             )
@@ -54,10 +52,8 @@ class TestCompletion:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Completion.create(
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Completion.run(
                 model="gpt-neo-2-7b",
                 prompt="I am a good programmer, therefore ",
             )
@@ -73,10 +69,8 @@ class TestCompletion:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Completion.create(
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Completion.run(
                 model="gpt-neo-2-7b",
                 prompt="I am a good programmer, therefore ",
             )
@@ -92,10 +86,8 @@ class TestCompletion:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Completion.create(
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Completion.run(
                 model="gpt-neo-2-7b",
                 prompt="I am a good programmer, therefore ",
             )
@@ -112,7 +104,7 @@ class TestCompletion:
         """Testing exception raising when passed as input a non-existing model
         name."""
         with pytest.raises(ModelNotFoundException):
-            api = Completion.create(model="best-completion-model-ever", prompt="text")
+            api = Completion.run(model="best-completion-model-ever", prompt="text")
 
     def test_none_result(self):
         """Testing format_result function when result doesn't exist yet."""
@@ -133,7 +125,7 @@ class TestCompletion:
 
     def test_verbose(self, mocked_answer):
         """
-        Testing create function with verbose setting.
+        Testing run function with verbose setting.
         Args:
             mocked_answer: the mocked answer from grequests.
 
@@ -141,10 +133,8 @@ class TestCompletion:
 
         """
         oxapi.api_key = "test"
-        with mock.patch(
-            "oxapi.abstract.api.grequests.map", return_value=[mocked_answer]
-        ):
-            api = Completion.create(
+        with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
+            api = Completion.run(
                 model="gpt-neo-2-7b",
                 prompt="I am a good programmer, therefore ",
                 verbose=True,

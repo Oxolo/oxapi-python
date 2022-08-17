@@ -10,7 +10,7 @@ class Pipeline(ModelAPI):
     """Class for creating OxAPI calls to Pipeline models."""
 
     @classmethod
-    def create(
+    def run(
         cls,
         model: str,
         texts: List[str],
@@ -19,7 +19,7 @@ class Pipeline(ModelAPI):
         verbose: bool = False,
         raise_exceptions: bool = True,
     ):
-        """Function to create and perform a call to OxAPI Pipeline model.
+        """Function to run and perform a call to OxAPI Pipeline model.
 
         Args:
             model (str): model to be invoked by the Pipeline API.
@@ -43,7 +43,7 @@ class Pipeline(ModelAPI):
             api_version=api_version,
             version=version,
         )
-        api, res = super().create(
+        api, res = super().run(
             api=api, verbose=verbose, body=body, raise_exceptions=raise_exceptions
         )
         api.set_params(result=res.json() if res is not None else res, input_texts=texts)
@@ -82,7 +82,7 @@ class Pipeline(ModelAPI):
     def prepare(
         cls, model: str, texts: List[str], api_version: str = None, version: str = None
     ):
-        """Function to create a call to OxAPI Pipeline model without performing
+        """Function to run a call to OxAPI Pipeline model without performing
         it. It will only set the parameters. A `Pipeline` object instantiated
         by the prepare function can be used in an `AsyncCallPipe`.
 

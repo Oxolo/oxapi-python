@@ -48,14 +48,14 @@ class TestModelAPI:
         """Test error at abstract class instantiation."""
         with pytest.raises(NotImplementedError):
             api = ModelAPI(
-                OxapiNLPClassificationModel("dialog-topic"), OxapiType.NLP, "w", "v"
+                OxapiNLPClassificationModel("dialog-topics"), OxapiType.NLP, "w", "v"
             )
 
     def test_api_key(self):
         """Testing error raising with not defined API Key."""
         oxapi.api_key = None
         with pytest.raises(InvalidAPIKeyException) as ve:
-            Classification.create(model="dialog-topic", texts=["esposito"])
+            Classification.run(model="dialog-topics", texts=["esposito"])
 
     def test_set_params(self):
         api = Classification.prepare("dialog-tag", ["mammamiaitaliano"])
@@ -66,11 +66,11 @@ class TestModelAPI:
         """Testing general OxAPIError exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[TestModelAPI.build_mocked_error(500)],
+            "oxapi.abstract.api.requests.post",
+            return_value=TestModelAPI.build_mocked_error(500),
         ):
             with pytest.raises(OxAPIError):
-                api = Classification.create(
+                api = Classification.run(
                     model="dialog-tag",
                     texts=[],
                 )
@@ -79,11 +79,11 @@ class TestModelAPI:
         """Testing NotFoundException exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[TestModelAPI.build_mocked_error(404)],
+            "oxapi.abstract.api.requests.post",
+            return_value=TestModelAPI.build_mocked_error(404),
         ):
             with pytest.raises(NotFoundException):
-                api = Classification.create(
+                api = Classification.run(
                     model="dialog-tag",
                     texts=[],
                 )
@@ -92,11 +92,11 @@ class TestModelAPI:
         """Testing NotAllowedException exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[TestModelAPI.build_mocked_error(403)],
+            "oxapi.abstract.api.requests.post",
+            return_value=TestModelAPI.build_mocked_error(403),
         ):
             with pytest.raises(NotAllowedException):
-                api = Classification.create(
+                api = Classification.run(
                     model="dialog-tag",
                     texts=[],
                 )
@@ -105,11 +105,11 @@ class TestModelAPI:
         """Testing InvalidAPIKeyException exception raising."""
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[TestModelAPI.build_mocked_error(401)],
+            "oxapi.abstract.api.requests.post",
+            return_value=TestModelAPI.build_mocked_error(401),
         ):
             with pytest.raises(InvalidAPIKeyException):
-                api = Classification.create(
+                api = Classification.run(
                     model="dialog-tag",
                     texts=[],
                 )
@@ -118,11 +118,11 @@ class TestModelAPI:
         """Testing general OxAPIError exception to string."""
         oxapi.api_key = "test"
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[TestModelAPI.build_mocked_error(500)],
+            "oxapi.abstract.api.requests.post",
+            return_value=TestModelAPI.build_mocked_error(500),
         ):
             try:
-                api = Classification.create(
+                api = Classification.run(
                     model="dialog-tag",
                     texts=[],
                 )
@@ -138,8 +138,8 @@ class TestModelAPI:
         oxapi.api_key = "test"
 
         with mock.patch(
-            "oxapi.abstract.api.grequests.map",
-            return_value=[mocked_answer_classification],
+            "oxapi.abstract.api.requests.post",
+            return_value=mocked_answer_classification,
         ):
-            api = Classification.create(model="dialog-content-filter", texts=["dizio"])
+            api = Classification.run(model="dialog-content-filter", texts=["dizio"])
             assert isinstance(str(api), str)

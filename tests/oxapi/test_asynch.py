@@ -42,10 +42,10 @@ class TestAsyncCallPipe:
         """
         oxapi.api_key = "test"
         texts = ["test", "test again"]
-        api1 = Encoding.prepare(model="mpnet-base-v2", texts=texts)
+        api1 = Encoding.prepare(model="all-mpnet-base-v2", texts=texts)
         api2 = Transformation.prepare(model="punctuation-imputation", texts=texts)
         asy = AsyncCallPipe([api1, api2])
-        with mock.patch("oxapi.asynch.grequests.map", return_value=mocked_answer):
+        with mock.patch("grequests.map", return_value=mocked_answer):
             res = asy.run()
 
             assert res[0].result is not None and res[1].result is not None
@@ -58,11 +58,11 @@ class TestAsyncCallPipe:
         """
         oxapi.api_key = "test"
         texts = ["test", "test again"]
-        api1 = Encoding.prepare(model="mpnet-base-v2", texts=texts)
+        api1 = Encoding.prepare(model="all-mpnet-base-v2", texts=texts)
         api2 = Transformation.prepare(model="punctuation-imputation", texts=texts)
         asy = AsyncCallPipe()
         asy.add([api1, api2])
-        with mock.patch("oxapi.asynch.grequests.map", return_value=mocked_answer):
+        with mock.patch("grequests.map", return_value=mocked_answer):
             res = asy.run()
 
             assert res[0].result is not None and res[1].result is not None
@@ -75,11 +75,11 @@ class TestAsyncCallPipe:
         """
         oxapi.api_key = "test"
         texts = ["test", "test again"]
-        api1 = Encoding.prepare(model="mpnet-base-v2", texts=texts)
+        api1 = Encoding.prepare(model="all-mpnet-base-v2", texts=texts)
         api2 = Transformation.prepare(model="punctuation-imputation", texts=texts)
         asy = AsyncCallPipe([api1])
         asy.add(api2)
-        with mock.patch("oxapi.asynch.grequests.map", return_value=mocked_answer):
+        with mock.patch("grequests.map", return_value=mocked_answer):
             res = asy.run()
 
             assert res[0].result is not None and res[1].result is not None
@@ -88,11 +88,11 @@ class TestAsyncCallPipe:
         """Testing flush function."""
         oxapi.api_key = "test"
         texts = ["test", "test again"]
-        api1 = Encoding.prepare(model="mpnet-base-v2", texts=texts)
+        api1 = Encoding.prepare(model="all-mpnet-base-v2", texts=texts)
         api2 = Transformation.prepare(model="punctuation-imputation", texts=texts)
         asy = AsyncCallPipe([api1, api2])
         asy.flush()
-        with mock.patch("oxapi.asynch.grequests.map", return_value=[]):
+        with mock.patch("grequests.map", return_value=[]):
             res = asy.run()
 
             assert res is None

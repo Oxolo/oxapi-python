@@ -1,7 +1,5 @@
 from typing import List, Union
 
-import grequests
-
 import oxapi
 from oxapi.abstract.api import ModelAPI
 
@@ -26,20 +24,21 @@ class AsyncCallPipe:
         Returns:
             List : the List of API calls with their result (or errors).
         """
+        import grequests
+
         if len(self.__call_list) == 0:
             oxapi.logger.warning("Call list is empty, nothing to run.")
             return
         reqs = []
         for call in self.__call_list:
             api_type: ModelAPI = call
-            token: str = "Bearer " + oxapi.api_key
             reqs.append(
                 grequests.post(
                     api_type.get_url(),
                     json=api_type._body,
                     headers={
                         "Content-Type": "application/json",
-                        "Authorization": token,
+                        "Authorization": oxapi.api_key,
                     },
                 )
             )
