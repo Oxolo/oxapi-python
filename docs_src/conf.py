@@ -17,8 +17,6 @@ import sys
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.append("../oxapi/")
 
-from config import version
-
 # -- Project information -----------------------------------------------------
 
 project = "OxAPI Python SDK"
@@ -26,7 +24,7 @@ copyright = ""
 author = "Oxolo"
 
 # The full version, including alpha/beta/rc tags
-release = version
+release = "1.1.0"
 
 # -- General configuration ---------------------------------------------------
 

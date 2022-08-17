@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.x.x] - 2022-xx-xx
+
+## Fixed
+- Fixed import of version in documentation
+
 ## [1.1.0] - 2022-08-17
 ### Added
 - Added location check to inform about degraded performance from outside US
