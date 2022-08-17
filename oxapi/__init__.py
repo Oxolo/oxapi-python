@@ -16,6 +16,21 @@ except KeyError:
         msg="API Key not found in environment variable 'OXAPI_KEY', you should set it manually"
     )
 
+from requests import RequestException, get as _init_get
+
+try:
+    location = _init_get("https://ipinfo.io")
+    if location.status_code == 200:
+        location = location.json()
+        if "country" not in location:
+            logger.warning(msg="Unable to perform location check.")
+        elif location["country"] != "US":
+            logger.warning(
+                msg="You are querying our API outside of the US. This results in significantly degraded performance."
+            )
+except RequestException:
+    logger.warning(msg="Unable to perform location check.")
+
 from oxapi.asynch import AsyncCallPipe
 from oxapi.config import default_api_version, default_model_version
 from oxapi.nlp.classification import Classification
