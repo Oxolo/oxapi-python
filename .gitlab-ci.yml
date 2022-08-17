@@ -89,7 +89,7 @@ pytest:
   artifacts:
     when: always
     paths:
-      - ./tests/"
+      - ./tests/
     reports:
       junit: tests/report.xml
   coverage: '/^TOTAL.+?(\d+\%)$/'
