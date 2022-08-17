@@ -234,6 +234,6 @@ upload_badge_artifacts:
     - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws s3 cp .tests/coverage.svg s3://github-public-storage/oxapi-python-coverage.svg
     - aws s3 cp ./pylint/pylint.svg s3://github-public-storage/oxapi-python-pylint.svg
+    - aws s3 cp ./tests/coverage.svg s3://github-public-storage/oxapi-python-coverage.svg
 
