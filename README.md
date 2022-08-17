@@ -1,10 +1,13 @@
 <p align="center">
-<a href="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"><img alt="Uptime" src="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"></a>
-<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-</p>
-
-<p align="center">
 <a><img width="300" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
+</p>
+<p align="center">
+<a href="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"><img alt="Uptime" src="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"></a>
+<a href="https://img.shields.io/website?url=https%3A%2F%2Foxapi.ai"><img alt="Website Up" src="https://img.shields.io/website?url=https%3A%2F%2Foxapi.ai"></a>
+<a href="https://img.shields.io/pypi/v/oxapi"><img alt="Website Up" src="https://img.shields.io/pypi/v/oxapi"></a>
+<a href="https://img.shields.io/github/issues/Oxolo/oxapi-python"><img alt="Issues" src="https://img.shields.io/github/issues/Oxolo/oxapi-python"></a>
+<a href="https://img.shields.io/github/license/Oxolo/oxapi-python"><img alt="License" src="https://img.shields.io/github/license/Oxolo/oxapi-python"></a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
 This Python library provides simplified access to the OxAPI from applications written in Python.
