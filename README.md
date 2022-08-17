@@ -55,11 +55,10 @@ python setup.py install
 ## Documentation
 
 For the full documentation of the API itself, please visit the [OxAPI documentation](https://oxapi.ai/documentation).
+
 If you want to check the documentation of this package, visit the [docs](http://github-oxapi-python-doc.s3-website.eu-central-1.amazonaws.com)
 
-Additionally, you find an interative tutorial on Colab.
-
-https://colab.research.google.com/drive/1pDJnMI5KNBY3QDrsFls0DYbulj3GgQf1?usp=sharing
+Additionally, you find an interative tutorial on Colab: <a href="https://colab.research.google.com/drive/1pDJnMI5KNBY3QDrsFls0DYbulj3GgQf1?usp=sharing"><img alt="Colab" src="https://img.shields.io/badge/colab-notebook-yellow"></a>
 
 ## Audience
 
