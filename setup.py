@@ -25,6 +25,7 @@ INSTALL_REQUIRES = [
     "requests>=2.27",
     "urllib3>=1.26.5",
     "jinja2==2.11.3",
+    "loguru==0.6.0",
 ]
 
 setup(
