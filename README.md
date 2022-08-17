@@ -1,19 +1,44 @@
-# OxAPI Python Library
+<p align="center">
+<a><img alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
+</p>
 
-The OxAPI Python library provides simplified access to the OxAPI
-from applications written in the Python language.
+# OxAPI
 
-## Documentation
+This Python library provides simplified access to the OxAPI from applications written in the Python language.
 
-See the [OxAPI documentation](https://api.oxolo.com/documentation) .
-Access to repo doc: http://github-oxapi-python-doc.s3-website.eu-central-1.amazonaws.com
+```python
+import oxapi
+oxapi.api_key = "sk-..."
+
+from oxapi.nlp.encoding import Encoding
+encoding = Encoding.create(
+    model="mpnet-base-v2",
+    texts=["Hello", "How are you?"]
+)
+```
+
+The OxAPI offers a variety of models from natural language processing for your convenience.
+
+We provide highly optimized and production-ready endpoints to serve artificial intelligence for
+your deep tech applications.
+
+Hosting and running such models is very difficult and time-consuming. At OxAPI, you get all the
+latest NLP technology for building applications without any of the inconveniences that come with
+it.
+
+We provide open-source and proprietary models with transparent and fair pricing as
+high-performance endpoints. Each model is documented in detail and offers an easy-to-use and
+understandable API. We take care of hosting, hardware selection, and optimization for you.
+The results are some of the fastest models on the market. OxAPI, from developers, for
+developers.
+
 ## Installation
 
 You don't need this source code unless you want to modify the package. If you just
 want to use the package, just run:
 
 ```sh
-pip install --upgrade oxapi-python
+pip install -U oxapi-python
 ```
 
 Install from source with:
@@ -22,25 +47,42 @@ Install from source with:
 python setup.py install
 ```
 
-### Package structure
+## Documentation
 
-```
-├── oxapi
-│   ├── abstract                
-│   │   └── api.py              # Non-instantiable, super classes for API calls
-│   ├── nlp                     
-│   │   ├── classification.py   # NLP Classification package
-│   │   ├── completion.py       # NLP Completion package
-│   │   ├── encoding.py         # NLP Encoding package
-│   │   ├── pipeline.py         # NLP Pipeline package
-│   │   └── transformation.py   # NLP Transformation package
-│   ├── utils.py                # General utilities
-│   ├── asynch.py               # package for asynchronous API calls
-│   └── error.py                # Custom exceptions module
-├── tests                       # Tests
-└── docs_src                    # Documentation source files
-```
+For the full documentation of the API itself, please visit the [OxAPI documentation](https://oxapi.ai/documentation).
+If you want to check the documentation of this package, visit the [docs](http://github-oxapi-python-doc.s3-website.eu-central-1.amazonaws.com)
 
+## Audience
+
+This package is intended for anyone working with natural language processing.
+
+- You need a reliable and scalable API to build your application on
+- You need the latest models at your fingertips
+- You don't need thousands of models, only a few really good ones
+- You need results blazingly fast
+- You don't want to bother creating and maintaining GPU instances
+- You don't care about the backend technology
+- You want someone else to take care of all the dirtywork
+- You have one or more of the following usecases:
+    - Natural Language Understanding
+        - Named Entity Recognition
+        - Emotion Classification
+        - Content Filtering
+        - Spell Checking
+        - Intention Classifcation
+        - Encoding
+        - Topic Classification
+    - Natural Language Generation
+        - Paraphrasing
+        - Spell-checking
+        - Code Generation
+        - Summarization
+        - Product Description
+        - Ad-Generation
+        - And many more!
+
+The list of use-cases will be expanded upon in the future. We will expand our offer with models from
+computer vision and audio eventually in the coming weeks and months. Stay tuned!
 
 ## Usage
 
@@ -275,7 +317,30 @@ asy.add(en)
 res = asy.run()
 ```
 
+## Package Structure
 
-## Credit
+```
+├── oxapi
+│   ├── abstract                
+│   │   └── api.py              # Non-instantiable, super classes for API calls
+│   ├── nlp                     
+│   │   ├── classification.py   # NLP Classification package
+│   │   ├── completion.py       # NLP Completion package
+│   │   ├── encoding.py         # NLP Encoding package
+│   │   ├── pipeline.py         # NLP Pipeline package
+│   │   └── transformation.py   # NLP Transformation package
+│   ├── utils.py                # General utilities
+│   ├── asynch.py               # package for asynchronous API calls
+│   └── error.py                # Custom exceptions module
+├── tests                       # Tests
+└── docs_src                    # Documentation source files
+```
 
+## Changelog
 
+- v1.0.0
+    - Initial Release
+
+## Credits
+
+(C) 2022 Oxolo GmbH
