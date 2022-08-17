@@ -1,5 +1,5 @@
 <p align="center">
-<a><img width="300" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
+<a><img width="400" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
 </p>
 <p align="center">
 <a href="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"><img alt="Uptime" src="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"></a>
