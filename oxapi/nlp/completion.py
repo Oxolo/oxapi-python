@@ -12,7 +12,7 @@ class Completion(ModelAPI):
     """Class for creating OxAPI calls to Completion models."""
 
     @classmethod
-    def create(
+    def run(
         cls,
         model: str,
         prompt: str,
@@ -22,7 +22,7 @@ class Completion(ModelAPI):
         raise_exceptions: bool = True,
         **kwargs
     ):
-        """Function to create and perform a call to OxAPI Completion model.
+        """Function to run and perform a call to OxAPI Completion model.
 
         Args:
             model (str): model to be invoked by the Completion API.
@@ -48,7 +48,7 @@ class Completion(ModelAPI):
             api_version=api_version,
             version=version,
         )
-        api, res = super().create(
+        api, res = super().run(
             api=api, verbose=verbose, body=body, raise_exceptions=raise_exceptions
         )
         api.set_params(result=res.json() if res is not None else res, prompt=prompt)
@@ -97,7 +97,7 @@ class Completion(ModelAPI):
         version: str = None,
         **kwargs
     ):
-        """Function to create a call to OxAPI Completion model without
+        """Function to run a call to OxAPI Completion model without
         performing it. It will only set the parameters. A `Completion` object
         instantiated by the prepare function can be used in an `AsyncCallPipe`.
 

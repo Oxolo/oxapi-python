@@ -26,14 +26,14 @@ class TestEncoding:
         )
 
     def test_create(self, mocked_answer):
-        """Testing create function.
+        """Testing run function.
 
         Args:
             mocked_answer: the mocked answer from grequests.
         """
         oxapi.api_key = "test"
         with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
-            api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
             assert api.result is not None
 
     def test_prepare(self):
@@ -50,7 +50,7 @@ class TestEncoding:
         """
         oxapi.api_key = "test"
         with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
-            api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result()
         assert isinstance(res, np.ndarray)
@@ -63,7 +63,7 @@ class TestEncoding:
         """
         oxapi.api_key = "test"
         with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
-            api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
 
         res = api.format_result("dict")
         assert isinstance(res, dict)
@@ -76,7 +76,7 @@ class TestEncoding:
         """
         oxapi.api_key = "test"
         with mock.patch("oxapi.abstract.api.requests.post", return_value=mocked_answer):
-            api = Encoding.create(model="all-mpnet-base-v2", texts=["esposito"])
+            api = Encoding.run(model="all-mpnet-base-v2", texts=["esposito"])
 
         with pytest.raises(ValueError) as ve:
             res = api.format_result("dino")
@@ -90,7 +90,7 @@ class TestEncoding:
         """Testing exception raising when passed as input a non-existing model
         name."""
         with pytest.raises(ModelNotFoundException):
-            api = Encoding.create(model="best-encoding-model-ever", texts=["text"])
+            api = Encoding.run(model="best-encoding-model-ever", texts=["text"])
 
     def test_none_result(self):
         """Testing format_result function when result doesn't exist yet."""

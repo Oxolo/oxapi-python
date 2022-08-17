@@ -84,8 +84,8 @@ class ModelAPI:
         )
 
     @classmethod
-    def create(cls, *args, **kwargs):
-        """Function to create and perform a call to any OxAPI model.
+    def run(cls, *args, **kwargs):
+        """Function to run and perform a call to any OxAPI model.
 
         Args:
             *args: any (see the derived class signature).

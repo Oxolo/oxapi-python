@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Moved `version` from `config.py` to `__init__`
 - Moved `log_level` from `config.py` to `__init__`
 - Moved from `grequests` to `requests` for sync calls to avoid gevent warnings
+- Moved import of `grequests` to runtime to avoid gevent warnings
 ### Removed
 - `Bearer` prefix for Token authorization
 
