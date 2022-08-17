@@ -1,15 +1,12 @@
-import logging
 import os
+from loguru import logger
 
 base_url = None
 api_key = None
 
 __version__ = "1.0.0"
-log_level = os.getenv("LOG_LEVEL", "INFO")
-logger = logging.getLogger(name="OxAPI Logger")
-logger.setLevel(level=log_level)
-
-os.environ["GEVENT_SUPPORT"] = "True"
+# log_level = os.getenv("LOG_LEVEL", "INFO")
+# logger.setLevel(level=log_level)
 
 try:
     api_key = os.environ["OXAPI_KEY"]
