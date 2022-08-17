@@ -18,6 +18,7 @@ stages:
   - test
   - push
   - documentation
+  - upload
 
 build-development-image:
   stage: build
@@ -209,4 +210,24 @@ upload-to-s3:
   script:
     - aws configure set region us-east-1
     - aws s3 sync public/ s3://github-oxapi-python-doc/
+
+
+upload_badge_artifacts:
+  stage: upload
+  needs:
+    - pytest
+    - pylint
+  variables:
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: 'eu-central-1'
+    GIT_STRATEGY: none
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws s3 cp ./tests/coverage.svg s3://github-public-storage/oxapi-python-coverage.svg
+    - aws s3 cp ./pylint/pylint.svg s3://github-public-storage/oxapi-python-pylint.svg
 
