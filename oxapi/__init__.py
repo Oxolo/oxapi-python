@@ -16,7 +16,7 @@ except KeyError:
         msg="API Key not found in environment variable 'OXAPI_KEY', you should set it manually"
     )
 
-from requests import RequestException
+from requests import RequestException as _RequestException
 from requests import get as _init_get
 
 try:
@@ -31,7 +31,7 @@ try:
             )
         else:
             logger.debug("Querying form the US. Enjoy the service!")
-except RequestException:
+except _RequestException:
     logger.warning(msg="Unable to perform location check.")
 
 from oxapi.asynch import AsyncCallPipe
