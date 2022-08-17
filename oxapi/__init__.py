@@ -16,7 +16,8 @@ except KeyError:
         msg="API Key not found in environment variable 'OXAPI_KEY', you should set it manually"
     )
 
-from requests import RequestException, get as _init_get
+from requests import RequestException
+from requests import get as _init_get
 
 try:
     location = _init_get("https://ipinfo.io")
