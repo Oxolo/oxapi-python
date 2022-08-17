@@ -191,7 +191,7 @@ pages:
     - main
   script:
     - cd docs_src
-    - sphinx-apidoc -o apidoc/ -H "API" -f ../oxapi [ ../oxapi/abstract/* ../oxapi/utils.py ../oxapi/error.py ]
+    - sphinx-apidoc -o apidoc/ -H "API" -f ../oxapi [ ../oxapi/abstract/* ../oxapi/utils.py ../oxapi/error.py
     - make html
     - cp -r _build/html/ ../public/
   artifacts:
