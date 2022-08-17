@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - Updated endpoint names
 - Updated endpoint routes
 - Fixed imports in `__init__` to surpress warnings
+- Moved `version` from `config.py` to `__init__`
+- Moved `log_level` from `config.py` to `__init__`
 ### Removed
 - `Bearer` prefix for Token authorization
 

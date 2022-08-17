@@ -10,7 +10,7 @@ sys.path.append("./oxapi/")
 
 from pathlib import Path
 
-from config import version
+from oxapi import __version__ as version
 
 long_description = Path("README.md").read_text()
 

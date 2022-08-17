@@ -2,6 +2,7 @@
 <a><img width="400" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
 </p>
 <p align="center">
+<a href="https://colab.research.google.com/drive/1pDJnMI5KNBY3QDrsFls0DYbulj3GgQf1?usp=sharing"><img alt="Colab" src="https://img.shields.io/badge/colab-notebook-yellow"></a>
 <a href="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"><img alt="Uptime" src="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"></a>
 <a href="https://img.shields.io/website?url=https%3A%2F%2Foxapi.ai"><img alt="Website Up" src="https://img.shields.io/website?url=https%3A%2F%2Foxapi.ai"></a>
 <a href="https://img.shields.io/pypi/v/oxapi"><img alt="Website Up" src="https://img.shields.io/pypi/v/oxapi"></a>
@@ -55,6 +56,10 @@ python setup.py install
 
 For the full documentation of the API itself, please visit the [OxAPI documentation](https://oxapi.ai/documentation).
 If you want to check the documentation of this package, visit the [docs](http://github-oxapi-python-doc.s3-website.eu-central-1.amazonaws.com)
+
+Additionally, you find an interative tutorial on Colab.
+
+https://colab.research.google.com/drive/1pDJnMI5KNBY3QDrsFls0DYbulj3GgQf1?usp=sharing
 
 ## Audience
 
