@@ -15,8 +15,7 @@ This Python library provides simplified access to the OxAPI from applications wr
 import oxapi
 oxapi.api_key = "sk-..."
 
-from oxapi.nlp.encoding import Encoding
-encoding = Encoding.run(
+encoding = oxapi.Encoding.run(
     model="mpnet-base-v2",
     texts=["Hello", "How are you?"]
 )
@@ -116,7 +115,7 @@ oxapi.api_key = "sk-..."
 ### Completion
 
 ```python
-from oxapi.nlp.completion import Completion
+from oxapi import Completion
 
 # Performing API call
 
@@ -143,7 +142,7 @@ Output:
 ### Classification
 
 ```python
-from oxapi.nlp.classification import Classification
+from oxapi import Classification
 
 # Performing API call
 
@@ -170,7 +169,7 @@ Output:
 ### Encoding
 
 ```python
-from oxapi.nlp.encoding import Encoding
+from oxapi import Encoding
 
 # Performing API call
 
@@ -202,7 +201,7 @@ Output:
 ### Transformation
 
 ```python
-from oxapi.nlp.transformation import Transformation
+from oxapi import Transformation
 
 # Performing API call
 
@@ -224,7 +223,7 @@ Output:
 ### Pipeline
 
 ```python
-from oxapi.nlp.pipeline import Pipeline
+from oxapi import Pipeline
 
 # Performing API call
 
@@ -279,12 +278,12 @@ Output:
 With ```oxapi-python``` package is possible to make calls to OxAPI in parallel. The ```AsyncCallPipe``` class takes as input a list of API calls each set through the ```prepare``` function to be executed by the pipeline.
 
 ```python
-from oxapi.asynch import AsyncCallPipe
+from oxapi.async import AsyncCallPipe
 
-from oxapi.nlp.completion import Completion
-from oxapi.nlp.classification import Classification
-from oxapi.nlp.transformation import Transformation
-from oxapi.nlp.pipeline import Pipeline
+from oxapi import Completion
+from oxapi import Classification
+from oxapi import Transformation
+from oxapi import Pipeline
 
 # Set up API calls
 
@@ -312,8 +311,8 @@ Output:
 It is possible to add API calls to the asynchronous pipe even after its instantiation though the ```add``` function. There's also the ```flush``` function to clear the list in the pipe.
 
 ```python
-from oxapi.asynch import AsyncCallPipe
-from oxapi.nlp.encoding import Encoding
+from oxapi.async import AsyncCallPipe
+from oxapi import Encoding
 
 # Instantiate an empty asynchornous pipe
 
@@ -342,7 +341,7 @@ res = asy.run()
 │   │   ├── pipeline.py         # NLP Pipeline package
 │   │   └── transformation.py   # NLP Transformation package
 │   ├── utils.py                # General utilities
-│   ├── asynch.py               # package for asynchronous API calls
+│   ├── async.py               # package for asynchronous API calls
 │   └── error.py                # Custom exceptions module
 ├── tests                       # Tests
 └── docs_src                    # Documentation source files
