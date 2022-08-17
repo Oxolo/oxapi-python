@@ -1,4 +1,9 @@
 <p align="center">
+<a href="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"><img alt="Uptime" src="https://img.shields.io/uptimerobot/ratio/m792235727-a2ab4cd1ffe3d2e025e777b9"></a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>
+
+<p align="center">
 <a><img width="300" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
 </p>
 
