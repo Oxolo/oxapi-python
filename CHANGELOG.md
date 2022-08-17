@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2022-08-17
 ### Added
 - Major first release
+- Added location check to inform about degraded performance from outside US
 ### Changed
 - Updated README.md
 - `.create` renamed `.run`
