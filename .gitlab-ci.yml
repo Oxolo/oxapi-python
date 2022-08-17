@@ -83,8 +83,7 @@ pytest:
   before_script:
     - pip install coverage-badge
   script:
-    - pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
-    - coverage run -m pytest
+    - coverage run -m pytest -v --cov-fail-under=20 --cov=oxapi --cov-report=term --cov-report html:tests/coverage --junit-xml=tests/report.xml tests
     - coverage-badge -o tests/coverage.svg
   artifacts:
     when: always
