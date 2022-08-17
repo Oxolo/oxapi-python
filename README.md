@@ -2,8 +2,6 @@
 <a><img width="300" alt="OxAPI Logo" src="https://dr96isfyftsoo.cloudfront.net/logo-transparent.png"></a>
 </p>
 
-# OxAPI
-
 This Python library provides simplified access to the OxAPI from applications written in the Python language.
 
 ```python
