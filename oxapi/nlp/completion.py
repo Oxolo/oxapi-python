@@ -97,9 +97,9 @@ class Completion(ModelAPI):
         version: str = None,
         **kwargs
     ):
-        """Function to run a call to OxAPI Completion model without
-        performing it. It will only set the parameters. A `Completion` object
-        instantiated by the prepare function can be used in an `AsyncCallPipe`.
+        """Function to run a call to OxAPI Completion model without performing
+        it. It will only set the parameters. A `Completion` object instantiated
+        by the prepare function can be used in an `AsyncCallPipe`.
 
         Args:
             model (str): model to be invoked by the Completion API.
