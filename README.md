@@ -83,7 +83,7 @@ This package is intended for anyone working with natural language processing.
         - Summarization
         - Product Description
         - Ad-Generation
-        - And many more ... 🚀
+        - And many more ... 
 
 The list of use-cases will be expanded upon in the future. We will expand our offer with models from
 computer vision and audio eventually in the coming weeks and months. Stay tuned!
