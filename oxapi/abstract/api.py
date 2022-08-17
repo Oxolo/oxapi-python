@@ -74,7 +74,6 @@ class ModelAPI:
         return "/".join(
             [
                 base_url,
-                "api",  # TODO: remove hardcoding
                 self.api_version,
                 "model",  # TODO: remove hardcoding
                 self.type.value,
