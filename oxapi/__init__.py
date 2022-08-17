@@ -30,7 +30,7 @@ try:
                 msg="You are querying our API outside of the US. This results in significantly degraded performance."
             )
         else:
-            logger.debug("Querying form the US. Enjoy the service!")
+            logger.info("Querying form the US. Enjoy the service!")
 except _RequestException:
     logger.warning(msg="Unable to perform location check.")
 
