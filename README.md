@@ -48,7 +48,7 @@ You don't need this source code unless you want to modify the package. If you ju
 want to use the package, just run:
 
 ```sh
-pip install -U oxapi-python
+pip install -U oxapi
 ```
 
 Install from source with:
