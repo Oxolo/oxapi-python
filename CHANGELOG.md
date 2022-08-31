@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [1.x.x] - 2022-xx-xx
 
+## [1.1.1] - 2022-08-31
+### Fixed
+- Relaxed jinja2 dependency
+
 ## Fixed
 - Fixed import of version in documentation
 
