@@ -24,7 +24,7 @@ INSTALL_REQUIRES = [
     "pandas>=1.3",
     "requests>=2.27",
     "urllib3>=1.26.5",
-    "jinja2==2.11.3",
+    "jinja2>=2.11.3",
     "hypothesis>=6.54.3",
     "jedi>=0.10",
 ]
