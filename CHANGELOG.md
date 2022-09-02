@@ -1,7 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.x.x] - 2022-xx-xx
+<!--- ## [1.x.x] - 2022-xx-xx --->
+
+## [1.1.2] - 2022-09-01
+### Added
+- Link to source code in pypi.org package page
 
 ## [1.1.1] - 2022-08-31
 ### Fixed

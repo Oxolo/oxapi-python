@@ -13,7 +13,7 @@ from pathlib import Path
 long_description = Path("README.md").read_text()
 
 NAME = "oxapi"
-VERSION = "1.1.1"
+VERSION = "1.1.2"
 DESCRIPTION = "The Python library for querying the OxAPI"
 AUTHOR = "Oxolo GmbH"
 AUTHOR_EMAIL = "support@oxapi.ai"
@@ -29,6 +29,8 @@ INSTALL_REQUIRES = [
     "jedi>=0.10",
 ]
 
+PROJECT_URLS = {"Source Code": "https://github.com/Oxolo/oxapi-python"}
+
 setup(
     name=NAME,
     version=VERSION,
@@ -39,4 +41,5 @@ setup(
     install_requires=INSTALL_REQUIRES,
     long_description=long_description,
     long_description_content_type="text/markdown",
+    project_urls=PROJECT_URLS,
 )
