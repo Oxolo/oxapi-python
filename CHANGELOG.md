@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 <!--- ## [1.x.x] - 2022-xx-xx --->
 
+## [1.1.3] - 2022-09-05
+### Fixed
+- Exception wrapping when error message from the API has not standard format.
+
 ## [1.1.2] - 2022-09-01
 ### Added
 - Link to source code in pypi.org package page
