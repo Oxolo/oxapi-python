@@ -198,9 +198,7 @@ class ModelAPI:
         if self.error is not None:
             if not raise_exceptions:
                 oxapi.logger.warning(
-                    "Request failed: {0}, ERROR: {1}".format(
-                        api_response.url, message
-                    )
+                    "Request failed: {0}, ERROR: {1}".format(api_response.url, message)
                 )
             else:
                 raise self.error
