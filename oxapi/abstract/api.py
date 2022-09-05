@@ -159,39 +159,47 @@ class ModelAPI:
             oxapi.logger.info("Response code: " + str(api_response.status_code))
         if api_response.status_code == 200:
             return
-        elif api_response.status_code == 401:
-            self.error = InvalidAPIKeyException(
-                message=api_response.json()["message"],
-                headers=api_response.headers,
-                http_status=api_response.status_code,
-                http_body=api_response.json(),
-            )
-        elif api_response.status_code == 403:
-            self.error = NotAllowedException(
-                message=api_response.json()["message"],
-                headers=api_response.headers,
-                http_status=api_response.status_code,
-                http_body=api_response.json(),
-            )
-        elif api_response.status_code == 404:
-            self.error = NotFoundException(
-                message=api_response.json()["message"],
-                headers=api_response.headers,
-                http_status=api_response.status_code,
-                http_body=api_response.json(),
-            )
         else:
-            self.error = OxAPIError(
-                message=api_response.json()["message"],
-                headers=api_response.headers,
-                http_status=api_response.status_code,
-                http_body=api_response.json(),
-            )
+            try:
+                message = api_response.json()["message"]
+            except KeyError:
+                try:
+                    message = api_response.json()[list(api_response.json().keys())[0]]
+                except:
+                    message = api_response.json()
+            if api_response.status_code == 401:
+                self.error = InvalidAPIKeyException(
+                    message=message,
+                    headers=api_response.headers,
+                    http_status=api_response.status_code,
+                    http_body=api_response.json(),
+                )
+            elif api_response.status_code == 403:
+                self.error = NotAllowedException(
+                    message=message,
+                    headers=api_response.headers,
+                    http_status=api_response.status_code,
+                    http_body=api_response.json(),
+                )
+            elif api_response.status_code == 404:
+                self.error = NotFoundException(
+                    message=message,
+                    headers=api_response.headers,
+                    http_status=api_response.status_code,
+                    http_body=api_response.json(),
+                )
+            else:
+                self.error = OxAPIError(
+                    message=message,
+                    headers=api_response.headers,
+                    http_status=api_response.status_code,
+                    http_body=api_response.json(),
+                )
         if self.error is not None:
             if not raise_exceptions:
                 oxapi.logger.warning(
                     "Request failed: {0}, ERROR: {1}".format(
-                        api_response.url, api_response.json()["message"]
+                        api_response.url, message
                     )
                 )
             else:
